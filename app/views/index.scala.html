@@ -1,5 +1,48 @@
-@()(implicit request: Request[_], messages: Messages)
+@import views.html.main
+@import models.forms.ExistingAccount
 
-@main(Messages("index.title")) {
-  <h1>@Messages("index.heading")</h1>
+@(form: Form[ExistingAccount])(implicit request: RequestHeader, messages: Messages)
+
+@accountError = @{form.hasErrors && form.errors.map(error => error.key).contains("account")}
+
+@main("Do you have an account?") {
+
+    @if(form.hasErrors) {
+    <div class="error help-block">
+        <h2 id="error-heading">@Messages("form.errors")</h2>
+        <ul>
+            @if(accountError) {<li><a href="#choose" id="account_error">@Messages("existingAccount.error.chooseAnswer")</a></li>}
+        </ul>
+    </div>
+    }
+
+    @helper.form(action = helper.CSRF(controllers.routes.IndexController.submit())) {
+    <fieldset>
+        <legend>
+            <h1 id="choose">@Messages("existingAccount.heading")</h1>
+            <p>@Messages("existingAccount.info")</p>
+        </legend>
+        <div class="form-group">
+            @if(form.hasErrors) {
+            <span>@Messages("existingAccount.error.chooseAnswer")</span>
+            }
+            <div>
+                <input id="yes" type="radio" name="existingAccountQuestion" value="Yes">
+                <label for="yes">
+                    <span>@Messages("common.yes")</span>
+                </label>
+            </div>
+            <div>
+                <input id="no" type="radio" name="existingAccountQuestion" value="No">
+                <label for="no">
+                    <span>@Messages("common.no")</span>
+                </label>
+            </div>
+        </div>
+    </fieldset>
+    <div class="form-group">
+        <button id="continue" class="button" type="submit">@Messages("common.continue")</button>
+    </div>
+    }
 }
+

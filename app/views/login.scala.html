@@ -1,0 +1,33 @@
+@import views.html.main
+@import models.forms.Login
+
+@(form: Form[Login])(implicit request: RequestHeader, messages: Messages)
+
+@loginError = @{form.hasErrors && form.errors.map(error => error.key).contains("login")}
+
+@main("Login") {
+
+    @if(form.hasErrors) {
+    <div class="error help-block">
+        <h2 id="error-heading">@Messages("form.errors")</h2>
+        <ul>
+            @if(loginError) {<li><a href="#choose" id="account_error">@Messages("existingAccount.error.chooseAnswer")</a></li>}
+        </ul>
+    </div>
+    }
+    <h1 id="choose">@Messages("login.heading")</h1>
+
+    @helper.form(controllers.routes.LoginPageController.submit()) {
+   <div class="form-group">
+       <label class="col-form-label" for="userName">User Name</label>
+       <input class="form-control" id="userName" type="text" name="userName">
+   </div>
+    <div class="form-group">
+        <label class="col-form-label" for="password">Password</label>
+        <input class="form-control" id="password" type="text" name="password">
+    </div>
+    <div class="form-group">
+        <button id="continue" class="button" type="submit">@Messages("common.continue")</button>
+    </div>
+    }
+}

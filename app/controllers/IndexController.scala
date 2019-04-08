@@ -2,22 +2,30 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.mvc._
+import form.ExistingAccountForm.existingAccountForm
 
 import scala.concurrent.Future
+import errors.ExistingAccountFormError
+import play.api.i18n.I18nSupport
+
 
 @Singleton
-class IndexController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) {
+class IndexController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) with I18nSupport {
 
-  def show: Action[AnyContent] = Action.async { implicit request =>
+  def show(): Action[AnyContent] = Action.async { implicit request =>
     Future.successful(
-      Ok(views.html.index())
+      Ok(views.html.index(existingAccountForm))
     )
   }
 
-  def submit: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(
-      NotImplemented
+  def submit(): Action[AnyContent] = Action.async { implicit request =>
+    existingAccountForm.bindFromRequest().fold(
+      formWithErrors =>
+        Future.successful(BadRequest(views.html.index(formWithErrors))),
+      success => success.account match {
+        case true => Future.successful(Redirect(routes.LoginPageController.show()))
+        case _ => Future.successful(Redirect(routes.IndexController.show()))
+      }
     )
   }
-
 }
