@@ -1,8 +1,8 @@
 package views
 
-import form.ExistingAccountForm
+import forms.ExistingAccountForm
 import utils.ViewSpecHelper
-import form.ExistingAccountForm._
+import forms.ExistingAccountForm._
 import org.jsoup.Jsoup
 import views.html.index
 

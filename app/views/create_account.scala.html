@@ -1,26 +1,28 @@
 @import views.html.main
 @import forms.Login
+@import helper._
 
 @(forms: Form[Login])(implicit request: RequestHeader, messages: Messages)
 
-@loginError = @{forms.hasErrors && forms.errors.map(error => error.key).contains("login")}
+@createAccountError = @{forms.hasErrors && forms.errors.map(error => error.key).contains("createAccount")}
 
-@main("Login") {
+@main("Create Account") {
 
     @if(forms.hasErrors) {
     <div class="error help-block">
         <h2 id="error-heading">@Messages("forms.errors")</h2>
         <ul>
-            @if(loginError) {<li><a href="#choose" id="account_error">@Messages("existingAccount.error.chooseAnswer")</a></li>}
+            @if(createAccountError) {<li><a href="#choose" id="account_error">@Messages("createAccount.error.enterValidDetails")</a></li>}
         </ul>
     </div>
     }
-    <h1 id="choose">@Messages("login.heading")</h1>
+    <h1 id="choose">@Messages("createAccount.heading")</h1>
 
-    @helper.form(action = controllers.routes.LoginPageController.submit()) {
+    @form(action = CSRF(controllers.routes.CreateAccountController.submit())) {
+        @CSRF.formField
    <div class="forms-group">
-       <label class="col-forms-label" for="userName">User Name</label>
-       <input class="forms-control" id="userName" type="text" name="userName">
+       <label class="col-forms-label" for="email">Email address</label>
+       <input class="forms-control" id="email" type="text" name="email">
    </div>
     <div class="forms-group">
         <label class="col-forms-label" for="password">Password</label>

@@ -1,38 +1,39 @@
 @import views.html.main
-@import models.forms.ExistingAccount
+@import forms.ExistingAccount
 
-@(form: Form[ExistingAccount])(implicit request: RequestHeader, messages: Messages)
+@(forms: Form[ExistingAccount])(implicit request: RequestHeader, messages: Messages)
 
-@accountError = @{form.hasErrors && form.errors.map(error => error.key).contains("account")}
+@accountError = @{forms.hasErrors && forms.errors.map(error => error.key).contains("account")}
 
 @main("Do you have an account?") {
 
-    @if(form.hasErrors) {
+    @if(forms.hasErrors) {
     <div class="error help-block">
-        <h2 id="error-heading">@Messages("form.errors")</h2>
+        <h2 id="error-heading">@Messages("forms.errors")</h2>
         <ul>
             @if(accountError) {<li><a href="#choose" id="account_error">@Messages("existingAccount.error.chooseAnswer")</a></li>}
         </ul>
     </div>
     }
 
-    @helper.form(action = helper.CSRF(controllers.routes.IndexController.submit())) {
+    @helper.form(action = controllers.routes.IndexController.submit()) {
+    @helper.CSRF.formField
     <fieldset>
         <legend>
             <h1 id="choose">@Messages("existingAccount.heading")</h1>
             <p>@Messages("existingAccount.info")</p>
         </legend>
-        <div class="form-group">
-            @if(form.hasErrors) {
+        <div class="forms-group">
+            @if(forms.hasErrors) {
             <span>@Messages("existingAccount.error.chooseAnswer")</span>
             }
-            <div>
+            <div class="multiple-choice">
                 <input id="yes" type="radio" name="existingAccountQuestion" value="Yes">
                 <label for="yes">
                     <span>@Messages("common.yes")</span>
                 </label>
             </div>
-            <div>
+            <div class="multiple-choice">
                 <input id="no" type="radio" name="existingAccountQuestion" value="No">
                 <label for="no">
                     <span>@Messages("common.no")</span>
@@ -40,7 +41,7 @@
             </div>
         </div>
     </fieldset>
-    <div class="form-group">
+    <div class="forms-group">
         <button id="continue" class="button" type="submit">@Messages("common.continue")</button>
     </div>
     }

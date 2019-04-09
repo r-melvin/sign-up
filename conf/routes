@@ -11,5 +11,11 @@ GET     /login                            controllers.LoginPageController.show
 
 POST    /login                            controllers.LoginPageController.submit
 
+# Create Account Page
+
+GET     /create-account                   controllers.CreateAccountController.show
+
+POST    /create-account                   controllers.CreateAccountController.submit
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                     controllers.Assets.versioned(path="/public", file: Asset)
