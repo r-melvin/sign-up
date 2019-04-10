@@ -4,17 +4,18 @@ import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.test._
 import play.api.test.Helpers._
+import play.api.test.CSRFTokenHelper._
 
 class IndexControllerSpec extends PlaySpec with GuiceOneAppPerSuite {
 
-  object TestIndexController extends IndexController(stubMessagesControllerComponents())
+ val controller = app.injector.instanceOf[IndexController]
 
-  val testGetRequest = FakeRequest(GET, "/")
-  val testPostRequest = FakeRequest(POST, "/")
+  val testGetRequest = FakeRequest(GET, "/").withCSRFToken
+  val testPostRequest = FakeRequest(POST, "/").withCSRFToken
 
   "GET /" should {
     "render the index page from a new instance of home controller" in {
-      val result = TestIndexController.show()(testGetRequest)
+      val result = controller.show()(testGetRequest)
 
       status(result) mustBe OK
       contentType(result) mustBe Some("text/html")
@@ -23,9 +24,9 @@ class IndexControllerSpec extends PlaySpec with GuiceOneAppPerSuite {
 
   "POST /" should {
     "return a Not Implemented" in {
-      val result = TestIndexController.submit()(testPostRequest)
+      val result = controller.submit()(testPostRequest)
 
-      status(result) mustBe NOT_IMPLEMENTED
+      status(result) mustBe SEE_OTHER
       //redirectLocation(result) mustBe Some(routes.SecondController.show().url)
     }
   }

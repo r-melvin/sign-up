@@ -1,5 +1,33 @@
-@()(implicit request: Request[_], messages: Messages)
+@import helper._
+@import forms.YesNoForm
+@import forms.YesNoForm.{option_yes, option_no, yesNo}
+@import models.YesNo
+@import views.html.main
+@import views.html.helpers.{summaryErrorHelper, radioButtonHelper}
 
-@main(Messages("index.title")) {
-  <h1>@Messages("index.heading")</h1>
+@(yesNoForm: Form[YesNo], action: Call)(implicit request: RequestHeader, messages: Messages)
+
+@main(title = Messages("existingAccount.title")) {
+
+    @summaryErrorHelper(yesNoForm)
+
+    <h1 class="heading-large">@Messages("existingAccount.heading ")</h1>
+
+    <form method="@action.method" action="@action.url">
+        @CSRF.formField
+        @radioButtonHelper(
+            parentForm = yesNoForm,
+            inline = true,
+            options = Seq(
+                (option_yes, Messages("common.yes")),
+                (option_no, Messages("common.no"))
+            ),
+            legend = Messages("existingAccount.heading"),
+            field = yesNoForm(yesNo)
+        )
+        <div class="form-group">
+            <button id="continue" class="button" type="submit">@Messages("common.continue")</button>
+        </div>
+    </form>
+
 }

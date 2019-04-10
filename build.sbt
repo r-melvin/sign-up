@@ -9,3 +9,4 @@ scalaVersion := "2.12.8"
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.1" % Test
+libraryDependencies += "org.jsoup" % "jsoup" % "1.11.3" % Test
