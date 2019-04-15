@@ -29,7 +29,7 @@ class IndexController @Inject()(mcc: MessagesControllerComponents) extends Messa
             Redirect(routes.LoginPageController.show())
           )
           case No => Future.successful(
-            NotImplemented
+            Redirect(routes.CreateAccountController.show())
           )
         }
       )
