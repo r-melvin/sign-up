@@ -1,12 +1,12 @@
 @import views.html.main
-@import forms.Login
+@import forms.NewAccount
 @import helper._
 
-@(forms: Form[Login])(implicit request: RequestHeader, messages: Messages)
+@(forms: Form[NewAccount])(implicit request: RequestHeader, messages: Messages)
 
 @createAccountError = @{forms.hasErrors && forms.errors.map(error => error.key).contains("createAccount")}
 
-@main("Create Account") {
+@main(title = Messages("createAccount.title")) {
 
     @if(forms.hasErrors) {
     <div class="error help-block">
@@ -20,6 +20,14 @@
 
     @form(action = CSRF(controllers.routes.CreateAccountController.submit())) {
         @CSRF.formField
+    <div class="forms-group">
+        <label class="col-forms-label" for="firstName">First Name</label>
+        <input class="forms-control" id="firstName" type="text" name="firstName">
+    </div>
+    <div class="forms-group">
+        <label class="col-forms-label" for="lastName">Last Name</label>
+        <input class="forms-control" id="lastName" type="text" name="lastName">
+    </div>
    <div class="forms-group">
        <label class="col-forms-label" for="email">Email address</label>
        <input class="forms-control" id="email" type="text" name="email">
@@ -27,6 +35,10 @@
     <div class="forms-group">
         <label class="col-forms-label" for="password">Password</label>
         <input class="forms-control" id="password" type="text" name="password">
+    </div>
+    <div class="forms-group">
+        <label class="col-forms-label" for="confirmPassword">Confirm Password</label>
+        <input class="forms-control" id="confirmPassword" type="text" name="confirmPassword">
     </div>
     <div class="forms-group">
         <button id="continue" class="button" type="submit">@Messages("common.continue")</button>

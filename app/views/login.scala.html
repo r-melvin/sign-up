@@ -5,7 +5,7 @@
 
 @loginError = @{forms.hasErrors && forms.errors.map(error => error.key).contains("login")}
 
-@main("Login") {
+@main(title = Messages("login.title")) {
 
     @if(forms.hasErrors) {
     <div class="error help-block">
