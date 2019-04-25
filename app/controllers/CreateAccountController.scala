@@ -6,14 +6,15 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc._
 import play.api.data._
 import play.api.i18n.I18nSupport
-import scala.concurrent.Future
+
+import scala.concurrent.{ExecutionContext, Future}
+import connectors.StoreUserDetailsConnector
 
 @Singleton
-class CreateAccountController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) with I18nSupport {
+class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
+                                        storeUserDetailsConnector: StoreUserDetailsConnector
+                                       )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) with I18nSupport {
 
-  private val users = scala.collection.mutable.ArrayBuffer(
-    UserData("Ben", "Ryan", "example@example.com")
-  )
 
   private val credentials = scala.collection.mutable.ArrayBuffer(
     Credentials("example@example.com", "p2ssword")
@@ -30,8 +31,8 @@ class CreateAccountController @Inject()(mcc: MessagesControllerComponents) exten
 
     val successFunction = { newAccount: NewAccount =>
       // This is the good case, where the form was successfully parsed as a Data object.
-      val newUser = UserData(firstName = newAccount.firstName, lastName = newAccount.lastName, email = newAccount.email)
-      users.append(newUser)
+      val newUser = UserData(firstName = newAccount.firstName, lastName = newAccount.lastName, email = newAccount.email, password = newAccount.password)
+      storeUserDetailsConnector.storeUserDetails(newUser)
       Redirect(routes.LoginPageController.show())
     }
 
