@@ -11,23 +11,29 @@
     <div class="error help-block">
         <h2 id="error-heading">@Messages("forms.errors")</h2>
         <ul>
-            @if(loginError) {<li><a href="#choose" id="account_error">@Messages("existingAccount.error.chooseAnswer")</a></li>}
+            @if(loginError) {<li><a href="#choose" id="login_error">@Messages("login.error.notEntered")</a></li>}
         </ul>
     </div>
     }
     <h1 id="choose">@Messages("login.heading")</h1>
 
     @helper.form(action = controllers.routes.LoginPageController.submit()) {
-   <div class="forms-group">
-       <label class="col-forms-label" for="userName">User Name</label>
-       <input class="forms-control" id="userName" type="text" name="userName">
-   </div>
-    <div class="forms-group">
-        <label class="col-forms-label" for="password">Password</label>
-        <input class="forms-control" id="password" type="text" name="password">
-    </div>
-    <div class="forms-group">
-        <button id="continue" class="button" type="submit">@Messages("common.continue")</button>
-    </div>
+    <form>
+        <div class="form-row align-items-center">
+            <div class="col-sm-3 my-1">
+                <label class="sr-only" for="inputUsername">@Messages("common.username")</label>
+                <input type="text" class="form-control" id="inputUsername" placeholder="@Messages("common.username")">
+            </div>
+            <div class="col-sm-3 my-1">
+                <label class="sr-only" for="inputPassword">@Messages("common.password")</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="inputPassword" placeholder="@Messages("common.password")">
+                </div>
+            </div>
+            <div class="col-auto my-1">
+                <button type="submit" class="btn btn-primary">@Messages("common.submit")</button>
+            </div>
+        </div>
+    </form>
     }
 }
