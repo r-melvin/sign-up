@@ -23,11 +23,11 @@ class IndexControllerSpec extends PlaySpec with GuiceOneAppPerSuite {
   }
 
   "POST /" should {
-    "return a Not Implemented" in {
+    "return a 303" in {
       val result = controller.submit()(testPostRequest)
 
       status(result) mustBe SEE_OTHER
-      //redirectLocation(result) mustBe Some(routes.SecondController.show().url)
+      redirectLocation(result) mustBe Some(routes.SecondController.show().url)
     }
   }
 
