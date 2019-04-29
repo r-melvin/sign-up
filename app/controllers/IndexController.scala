@@ -1,9 +1,8 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-import models.{No, Yes}
-import forms.YesNoForm.yesNoForm
-import play.api.mvc._
+import forms.ExistingAccountForm.existingAccountForm
+import play.api.mvc.{Action, AnyContent, MessagesAbstractController, MessagesControllerComponents}
 
 import scala.concurrent.Future
 
@@ -23,8 +22,8 @@ class IndexController @Inject()(mcc: MessagesControllerComponents) extends Messa
         formWithErrors =>
           Future.successful(
             BadRequest(views.html.index(formWithErrors, routes.IndexController.submit()))
-          ),
-        {
+          )
+        , {
           case Yes => Future.successful(
             Redirect(routes.LoginPageController.show())
           )

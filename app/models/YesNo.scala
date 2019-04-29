@@ -1,7 +1,6 @@
 package models
 
-sealed trait YesNo
+trait YesNo{
+  def getYesNoValue: String
+}
 
-case object Yes extends YesNo
-
-case object No extends YesNo
