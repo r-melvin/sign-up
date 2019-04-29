@@ -22,24 +22,6 @@ import play.api.libs.ws.WSClient
 
 import scala.util.Random
 
-//class StoreUserDetailsConnector @Inject()(ws: WSClient, implicit val ec: ExecutionContext) {
-//  def storeUserDetails(details: UserData): Future[Either[Status, AccountCreatedResponse]] = {
-//    val serviceUrl = "http://localhost:9001/"
-//    ws.url(serviceUrl)
-//      .addHttpHeaders()
-//      .post(Json.toJson(details))
-//      .map(response =>
-//        response.status match {
-//          case OK =>
-//            Right(response.json.as[AccountCreatedResponse])
-//          case _ =>
-//            Left()
-//      }
-//      )
-//    }
-//
-//  }
-
 class StoreUserDetailsConnector @ Inject()(ws: WSClient)(implicit ec: ExecutionContext) {
   def storeUserDetails(details: UserData): Future[Either[String, JsValue]] = {
     val request: WSRequest = ws.url("http://localhost:9001/")
