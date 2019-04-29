@@ -11,23 +11,24 @@
 
     @summaryErrorHelper(yesNoForm)
 
-    <h1 class="heading-large">@Messages("existingAccount.heading ")</h1>
+    <h1 class="heading-large">@Messages("existingAccount.heading")</h1>
 
-    <form method="@action.method" action="@action.url">
-        @CSRF.formField
-        @radioButtonHelper(
-            parentForm = yesNoForm,
-            inline = true,
-            options = Seq(
-                (option_yes, Messages("common.yes")),
-                (option_no, Messages("common.no"))
-            ),
-            legend = Messages("existingAccount.heading"),
-            field = yesNoForm(yesNo)
-        )
-        <div class="form-group">
-            <button id="continue" class="button" type="submit">@Messages("common.continue")</button>
-        </div>
-    </form>
-
+    <div class="container-fluid">
+        <form method="@action.method" action="@action.url">
+            @CSRF.formField
+            @radioButtonHelper(
+                parentForm = yesNoForm,
+                inline = true,
+                options = Seq(
+                    (option_yes, Messages("common.yes")),
+                    (option_no, Messages("common.no"))
+                ),
+                legend = Messages("existingAccount.heading"),
+                field = yesNoForm(yesNo)
+            )
+            <div class="form-group">
+                <button id="continue" class="btn btn-primary" type="submit">@Messages("common.continue")</button>
+            </div>
+        </form>
+    </div>
 }
