@@ -1,17 +1,15 @@
 @import helper._
-@import forms.YesNoForm
-@import forms.YesNoForm.{option_yes, option_no, yesNo}
-@import models.YesNo
+@import forms.YesNoForm._
 @import views.html.main
 @import views.html.helpers.{summaryErrorHelper, radioButtonHelper}
 
-@(yesNoForm: Form[YesNo], action: Call)(implicit request: RequestHeader, messages: Messages)
+@(yesNoForm: Form[YesNoModel], action: Call)(implicit request: RequestHeader, messages: Messages)
 
-@main(title = Messages("existingAccount.title")) {
+@main(title = Messages("doYouHaveAnAccount.title")) {
 
     @summaryErrorHelper(yesNoForm)
 
-    <h1 class="heading-large">@Messages("existingAccount.heading")</h1>
+    <h1 class="heading-large">@Messages("doYouHaveAnAccount.heading")</h1>
 
     <div class="container-fluid">
         <form method="@action.method" action="@action.url">
@@ -20,11 +18,11 @@
                 parentForm = yesNoForm,
                 inline = true,
                 options = Seq(
-                    (option_yes, Messages("common.yes")),
-                    (option_no, Messages("common.no"))
+                    ("yes", Messages("common.yes")),
+                    ("no", Messages("common.no"))
                 ),
-                legend = Messages("existingAccount.heading"),
-                field = yesNoForm(yesNo)
+                legend = Messages("doYouHaveAnAccount.heading"),
+                field = yesNoForm("answer")
             )
             <div class="form-group">
                 <button id="continue" class="btn btn-primary" type="submit">@Messages("common.continue")</button>
