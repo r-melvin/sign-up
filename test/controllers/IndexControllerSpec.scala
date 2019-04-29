@@ -27,7 +27,7 @@ class IndexControllerSpec extends PlaySpec with GuiceOneAppPerSuite {
       val result = controller.submit()(testPostRequest)
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(routes.SecondController.show().url)
+      redirectLocation(result) mustBe Some(routes.LoginPageController.show().url)
     }
   }
 
