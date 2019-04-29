@@ -1,4 +1,4 @@
-# Keys                                          # Content
+# Keys                                            # Content
 
 form.errors                                     = There is a problem
 common.yes                                      = Yes
@@ -20,6 +20,7 @@ existingAccount.error.chooseAnswer              = Tell us if you already have an
 existingAccount.info                            = Select ''Yes'' if you have previously created an account with us, otherwise select ''No'' to create a new account.
 
 createAccount.error.enterValidDetails           = Enter valid account information
+createAccount.title                             = Create Account
 createAccount.heading                           = Create an account
 
 login.heading                                   = Login
