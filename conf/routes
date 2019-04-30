@@ -2,9 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 
 # Initial page
-GET     /                                 controllers.IndexController.show
+GET     /                                 controllers.DoYouHaveAnAccountController.show
 
-POST    /                                 controllers.IndexController.submit
+POST    /                                 controllers.DoYouHaveAnAccountController.submit
 
 # Login Page
 GET     /login                            controllers.LoginPageController.show

@@ -1,9 +1,9 @@
 package controllers
 
-import forms.Login
+import forms.LoginForm
 import javax.inject.{Inject, Singleton}
 import play.api.mvc._
-
+import views.html.login
 import scala.concurrent.Future
 
 @Singleton
@@ -12,16 +12,17 @@ class LoginPageController @Inject()(mcc: MessagesControllerComponents) extends M
   def show(): Action[AnyContent] = Action.async {
     implicit request =>
       Future.successful(
-        Ok(views.html.login(Login.loginForm))
+        Ok(login(LoginForm.loginForm, routes.LoginPageController.show()))
       )
   }
 
   def submit(): Action[AnyContent] = Action.async {
     implicit request =>
-      Login.loginForm.bindFromRequest().fold(
+      LoginForm.loginForm.bindFromRequest().fold(
         formWithErrors => {
-          Future.successful(BadRequest(views.html.login(formWithErrors)))
-        }, successfulLogin => Future.successful(Redirect(routes.LoginPageController.show()))
+          Future.successful(BadRequest(login(formWithErrors, routes.LoginPageController.submit())))
+        },
+        successfulLogin => Future.successful(NotImplemented)
       )
   }
 }
