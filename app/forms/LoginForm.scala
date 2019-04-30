@@ -10,8 +10,13 @@ object LoginForm {
 
   val loginForm = Form(
     mapping(
-      "email" -> nonEmptyText,
+      "email" -> email
+        .verifying("email.required.error", _.nonEmpty)
+        .verifying(emailAddress(errorMessage = "email.format.error")),
       "password" -> nonEmptyText
+        .verifying("password.required.error", _.nonEmpty)
+        .verifying("password.length.error", _.length > 7)
+        .verifying("password.length.error", _.length < 21)
     )(LoginForm.apply)(LoginForm.unapply)
   )
 }

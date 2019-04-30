@@ -10,7 +10,7 @@ import play.api.test.FakeRequest
 
 import scala.reflect.ClassTag
 
-trait ViewSpecHelper extends WordSpec with Matchers with GuiceOneAppPerSuite {
+trait TestHelper extends WordSpec with Matchers with GuiceOneAppPerSuite {
   lazy val injector: Injector = app.injector
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit lazy val fakeRequest: RequestHeader = FakeRequest()

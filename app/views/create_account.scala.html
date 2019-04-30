@@ -1,25 +1,18 @@
 @import views.html.main
 @import forms.NewAccount
 @import helper._
+@import views.html.helpers.summaryErrorHelper
 
-@(forms: Form[NewAccount])(implicit request: RequestHeader, messages: Messages)
-
-@createAccountError = @{forms.hasErrors && forms.errors.map(error => error.key).contains("createAccount")}
+@(form: Form[NewAccount])(implicit request: RequestHeader, messages: Messages)
 
 @main(title = Messages("createAccount.title")) {
 
-    @if(forms.hasErrors) {
-    <div class="error help-block">
-        <h2 id="error-heading">@Messages("forms.errors")</h2>
-        <ul>
-            @if(createAccountError) {<li><a href="#choose" id="account_error">@Messages("createAccount.error.enterValidDetails")</a></li>}
-        </ul>
-    </div>
-    }
+    @summaryErrorHelper(form)
+
     <h1 id="choose">@Messages("createAccount.heading")</h1>
 
-    @form(action = CSRF(controllers.routes.CreateAccountController.submit())) {
-        @CSRF.formField
+    @helper.form(controllers.routes.CreateAccountController.submit()) {
+        @helper.CSRF.formField
     <div class="forms-group">
         <label class="col-forms-label" for="firstName">First Name</label>
         <input class="forms-control" id="firstName" type="text" name="firstName">

@@ -10,11 +10,19 @@ object NewAccount {
 
   val newAccountForm = Form(
     mapping(
-      "firstName" -> nonEmptyText,
-      "lastName" -> nonEmptyText,
-      "email" -> email,
-      "password" -> nonEmptyText,
+      "firstName" -> nonEmptyText.verifying("firstName.required.error", _.nonEmpty),
+      "lastName" -> nonEmptyText.verifying("lastName.required.error", _.nonEmpty),
+      "email" -> email
+        .verifying("email.required.error", _.nonEmpty)
+        .verifying(emailAddress(errorMessage ="email.format.error")),
+      "password" -> nonEmptyText
+        .verifying("password.required.error", _.nonEmpty)
+        .verifying("password.length.error", _.length > 7)
+        .verifying("password.length.error", _.length < 21),
       "confirmPassword" -> nonEmptyText
-    )(NewAccount.apply)(NewAccount.unapply).verifying("passwords do not match", account => account.password == account.confirmPassword)
+        .verifying("password.required.error", _.nonEmpty)
+        .verifying("password.length.error", _.length > 7)
+        .verifying("password.length.error", _.length < 21)
+    )(NewAccount.apply)(NewAccount.unapply).verifying("password.match.error", account => account.password == account.confirmPassword)
   )
 }

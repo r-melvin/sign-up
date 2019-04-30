@@ -3,27 +3,34 @@
 #errors
 answer.error.chooseAnswer.summary               = Select a valid answer
 answer.error.chooseAnswer.field                 = Select a valid answer
+email.required.error.summary                    = Enter an email address
+email.format.error.summary                      = Enter a valid email address
+firstName.required.error.summary                = Enter your first name
+lastName.required.error.summary                 = Enter your last name
+password.required.error.summary                 = Enter a password
+password.length.error.summary                   = Enter a password between 8 and 20 characters
+password.match.error.summary                    = Enter the same password in both fields
+common.error_heading                            = There is a problem
+
 
 #common
-common.error_heading                            = There is a problem
 common.yes                                      = Yes
 common.no                                       = No
 common.continue                                 = Continue
 common.submit                                   = Submit
 common.username                                 = Username
 common.password                                 = Password
+common.email                                    = Email
 
 #Do You Have An Account
 doYouHaveAnAccount.title                        = Do you have an account?
 doYouHaveAnAccount.heading                      = Do you already have an account with us?
 doYouHaveAnAccount.info                         = Select ''Yes'' if you have previously created an account with us, otherwise select ''No'' to create a new account.
-doYouHaveAnAccount.error.title                  = Error - Do you have an account?
 doYouHaveAnAccount.error.chooseAnswer           = Tell us if you already have an account with us
 
 #Create Account
 createAccount.title                             = Create Account
 createAccount.heading                           = Create an account
-createAccount.error.enterValidDetails           = Enter valid account information
 
 #Login Page
 login.heading                                   = Login

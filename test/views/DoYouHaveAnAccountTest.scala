@@ -1,12 +1,12 @@
 package views
 
 import forms._
-import utils.ViewSpecHelper
+import utils.TestHelper
 import org.jsoup.Jsoup
 import play.api.test.CSRFTokenHelper._
 import play.api.test._
 
-class DoYouHaveAnAccountViewSpec extends ViewSpecHelper {
+class DoYouHaveAnAccountTest extends TestHelper {
 
   lazy val emptyForm = YesNoForm.yesNoForm
   lazy val request = fakeRequest.withCSRFToken

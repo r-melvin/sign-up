@@ -12,7 +12,7 @@ class LoginPageController @Inject()(mcc: MessagesControllerComponents) extends M
   def show(): Action[AnyContent] = Action.async {
     implicit request =>
       Future.successful(
-        Ok(login(LoginForm.loginForm, routes.LoginPageController.show()))
+        Ok(login(LoginForm.loginForm))
       )
   }
 
@@ -20,9 +20,9 @@ class LoginPageController @Inject()(mcc: MessagesControllerComponents) extends M
     implicit request =>
       LoginForm.loginForm.bindFromRequest().fold(
         formWithErrors => {
-          Future.successful(BadRequest(login(formWithErrors, routes.LoginPageController.submit())))
+          Future.successful(BadRequest(login(formWithErrors)))
         },
-        successfulLogin => Future.successful(NotImplemented)
+        successfulLogin => Future.successful(Ok)
       )
   }
 }

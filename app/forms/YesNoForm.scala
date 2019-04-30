@@ -11,4 +11,3 @@ object YesNoForm {
     )(YesNoModel.apply)(YesNoModel.unapply)
   )
 }
-
