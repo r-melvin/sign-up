@@ -1,6 +1,7 @@
 package utils
 
-import models.{Credentials, UserData}
+import models.UserData
+import models.forms.Credentials
 
 object TestData {
 

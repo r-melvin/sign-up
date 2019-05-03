@@ -1,9 +1,9 @@
 @import views.html.main
-@import forms.NewAccount
+@import models.forms.NewAccountModel
 @import helper._
 @import views.html.helpers.summaryErrorHelper
 
-@(form: Form[NewAccount])(implicit request: RequestHeader, messages: Messages)
+@(form: Form[NewAccountModel])(implicit request: RequestHeader, messages: Messages)
 
 @main(title = Messages("createAccount.title")) {
 

@@ -1,28 +1,27 @@
 package forms
 
+import models.forms.NewAccountModel
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
 
-case class NewAccount(firstName: String, lastName: String, email: String, password: String, confirmPassword: String)
+object NewAccountForm {
 
-object NewAccount {
-
-  val newAccountForm = Form(
+  val newAccountForm: Form[NewAccountModel] = Form(
     mapping(
-      "firstName" -> nonEmptyText.verifying("firstName.required.error", _.nonEmpty),
-      "lastName" -> nonEmptyText.verifying("lastName.required.error", _.nonEmpty),
-      "email" -> email
+      "firstName" -> text.verifying("firstName.required.error", _.nonEmpty),
+      "lastName" -> text.verifying("lastName.required.error", _.nonEmpty),
+      "email" -> text
         .verifying("email.required.error", _.nonEmpty)
         .verifying(emailAddress(errorMessage ="email.format.error")),
-      "password" -> nonEmptyText
+      "password" -> text
         .verifying("password.required.error", _.nonEmpty)
         .verifying("password.length.error", _.length > 7)
         .verifying("password.length.error", _.length < 21),
-      "confirmPassword" -> nonEmptyText
+      "confirmPassword" -> text
         .verifying("password.required.error", _.nonEmpty)
         .verifying("password.length.error", _.length > 7)
         .verifying("password.length.error", _.length < 21)
-    )(NewAccount.apply)(NewAccount.unapply).verifying("password.match.error", account => account.password == account.confirmPassword)
+    )(NewAccountModel.apply)(NewAccountModel.unapply).verifying("password.match.error", account => account.password == account.confirmPassword)
   )
 }

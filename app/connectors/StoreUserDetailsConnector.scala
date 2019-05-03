@@ -1,7 +1,7 @@
 package connectors
 
 import play.api.http.Status._
-import models.{Credentials, UserData}
+import models._
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import javax.inject.Inject
@@ -16,6 +16,8 @@ import akka.stream.ActorMaterializer
 import akka.stream.scaladsl._
 import akka.util.ByteString
 import java.util.UUID.randomUUID
+
+import models.forms.Credentials
 
 import scala.concurrent.{ExecutionContext, Future}
 import play.api.libs.ws.WSClient

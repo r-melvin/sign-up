@@ -1,6 +1,6 @@
 package controllers
 
-import forms.NewAccount._
+import forms.NewAccountForm._
 import models.UserData
 import javax.inject.{Inject, Singleton}
 import play.api.mvc._
@@ -34,18 +34,18 @@ class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
   }
 
 //  def submit(): Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] =>
-//    val errorFunction = { formWithErrors: Form[NewAccount] =>
+//    val errorFunction = { formWithErrors: Form[NewAccountForm] =>
 //      BadRequest(views.html.create_account(formWithErrors))
 //    }
 //
-//    val successFunction = { newAccount: NewAccount =>
+//    val successFunction = { newAccount: NewAccountForm =>
 //      // This is the good case, where the form was successfully parsed as a Data object.
 //      val newUser = UserData(firstName = newAccount.firstName, lastName = newAccount.lastName, email = newAccount.email, password = newAccount.password)
 //      storeUserDetailsConnector.storeUserDetails(newUser)
 //      Redirect(routes.LoginPageController.show())
 //    }
 //
-//    val formValidationResult = NewAccount.newAccountForm.bindFromRequest
+//    val formValidationResult = NewAccountForm.newAccountForm.bindFromRequest
 //    formValidationResult.fold(errorFunction, successFunction)
 //  }
 }

@@ -1,6 +1,7 @@
 package forms
 
 import models._
+import models.forms.YesNoModel
 import play.api.data.Forms._
 import play.api.data._
 

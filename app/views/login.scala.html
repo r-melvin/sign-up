@@ -1,9 +1,9 @@
 @import helper._
-@import forms.LoginForm
+@import models.forms.Credentials
 @import views.html.main
 @import views.html.helpers.summaryErrorHelper
 
-@(form: Form[LoginForm])(implicit request: RequestHeader, messages: Messages)
+@(form: Form[Credentials])(implicit request: RequestHeader, messages: Messages)
 
 @main(title = Messages("login.title")) {
 
