@@ -6,13 +6,13 @@ import org.jsoup.Jsoup
 import play.api.test.CSRFTokenHelper._
 import play.api.test._
 
-class DoYouHaveAnAccountViewTest extends TestHelper {
+class DoYouHaveAnAccountViewSpec extends TestHelper {
 
   lazy val emptyForm = YesNoForm.yesNoForm
   lazy val request = fakeRequest.withCSRFToken
 
   "Calling the DoYouHaveAccount view" should {
-    lazy val document = Jsoup.parse(views.html.do_you_have_an_account(emptyForm, testCall)(request, messages).body)
+    lazy val document = Jsoup.parse(views.html.do_you_have_an_account(emptyForm)(request, messages).body)
 
     "have the title 'Do you have an account?'" in {
       document.title shouldEqual "Do you have an account?"

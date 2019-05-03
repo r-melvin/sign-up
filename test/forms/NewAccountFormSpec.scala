@@ -84,6 +84,63 @@ class NewAccountFormSpec extends WordSpec with Matchers {
           boundForm.errors.contains(FormError("email", "email.required.error"))
         }
       }
+
+      "not supplied with a password" should {
+
+        val boundForm = form.bind(Map(
+          "firstName" -> "Joe",
+          "lastName" -> "Bloggs",
+          "email" -> "example@example.com",
+          "password" -> "",
+          "confirmPassword" -> "p2ssword"))
+
+        "have 1 error" in {
+          boundForm.errors.size shouldBe 1
+        }
+
+        "have the error message key 'password.required.error'" in {
+
+          boundForm.errors.contains(FormError("password", "password.required.error"))
+        }
+      }
+
+      "not supplied with a confirmPassword" should {
+
+        val boundForm = form.bind(Map(
+          "firstName" -> "Joe",
+          "lastName" -> "Bloggs",
+          "email" -> "example@example.com",
+          "password" -> "p2ssword",
+          "confirmPassword" -> ""))
+
+        "have 1 error" in {
+          boundForm.errors.size shouldBe 1
+        }
+
+        "have the error message key 'password.confirm.required.error'" in {
+
+          boundForm.errors.contains(FormError("password", "password.confirm.required.error"))
+        }
+      }
+
+      "password and confirmPassword do not match" should {
+
+        val boundForm = form.bind(Map(
+          "firstName" -> "Joe",
+          "lastName" -> "Bloggs",
+          "email" -> "example@example.com",
+          "password" -> "p2ssword",
+          "confirmPassword" -> "p3ssword"))
+
+        "have 1 error" in {
+          boundForm.errors.size shouldBe 1
+        }
+
+        "have the error message key 'password.match.error'" in {
+
+          boundForm.errors.contains(FormError("password", "password.match.error"))
+        }
+      }
     }
   }
 }

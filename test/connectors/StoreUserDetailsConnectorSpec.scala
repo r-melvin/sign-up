@@ -2,6 +2,7 @@ package connectors
 
 import akka.actor.Status.Success
 import akka.stream.Materializer
+import config.AppConfig
 import mockws.{MockWS, Route}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
@@ -18,9 +19,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class StoreUserDetailsConnectorSpec extends PlaySpec with ScalaFutures with Results with MockitoSugar with GuiceOneServerPerSuite {
 
   implicit lazy val materializer: Materializer = app.materializer
-  lazy val controllerComponents: ControllerComponents = app.injector.instanceOf[ControllerComponents]
-
-//  def await[A](future: Future[A]): A = Await.result(future, 5 seconds)
+  lazy val controllerComponents: ControllerComponents = app.injector.instanceOf(classOf[ControllerComponents])
+  lazy val appConfig: AppConfig = app.injector.instanceOf(classOf[AppConfig])
 
   "storeUserDetails" should {
 
@@ -32,7 +32,7 @@ class StoreUserDetailsConnectorSpec extends PlaySpec with ScalaFutures with Resu
       }
 
       val ws = MockWS(testRoute)
-      val connector = new StoreUserDetailsConnector(ws)
+      val connector = new StoreUserDetailsConnector(appConfig, ws)
 
       val result = Await.result(connector.storeUserDetails(userData), 5 seconds)
 

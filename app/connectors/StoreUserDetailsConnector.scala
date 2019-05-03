@@ -17,6 +17,7 @@ import akka.stream.scaladsl._
 import akka.util.ByteString
 import java.util.UUID.randomUUID
 
+import config.AppConfig
 import models.forms.Credentials
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -24,9 +25,10 @@ import play.api.libs.ws.WSClient
 
 import scala.util.Random
 
-class StoreUserDetailsConnector @ Inject()(ws: WSClient)(implicit ec: ExecutionContext) {
+class StoreUserDetailsConnector @ Inject()(config: AppConfig, ws: WSClient)(implicit ec: ExecutionContext) {
   def storeUserDetails(details: UserData): Future[Either[String, JsValue]] = {
-    val request: WSRequest = ws.url("http://localhost:9001/")
+    val url = s"${config.signUpUrl}/store-user-details"
+    val request: WSRequest = ws.url(url)
     request
       .addHttpHeaders("Content-Type" -> "application/json")
       .post(Json.toJson(details))

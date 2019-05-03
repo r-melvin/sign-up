@@ -19,7 +19,7 @@ object NewAccountForm {
         .verifying("password.length.error", _.length > 7)
         .verifying("password.length.error", _.length < 21),
       "confirmPassword" -> text
-        .verifying("password.required.error", _.nonEmpty)
+        .verifying("password.confirm.required.error", _.nonEmpty)
         .verifying("password.length.error", _.length > 7)
         .verifying("password.length.error", _.length < 21)
     )(NewAccountModel.apply)(NewAccountModel.unapply).verifying("password.match.error", account => account.password == account.confirmPassword)

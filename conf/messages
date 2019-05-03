@@ -8,6 +8,7 @@ email.format.error                              = Enter a valid email address
 firstName.required.error                        = Enter your first name
 lastName.required.error                         = Enter your last name
 password.required.error                         = Enter a password
+password.confirm.required.error                 = Confirm your password
 password.length.error                           = Enter a password between 8 and 20 characters
 password.match.error                            = Enter the same password in both fields
 common.error_heading                            = There is a problem

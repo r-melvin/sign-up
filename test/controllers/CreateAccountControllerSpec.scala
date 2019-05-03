@@ -18,7 +18,7 @@ class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite {
                   password: String,
                   confirmPassword: String) =
     FakeRequest("POST", "/create-account").withFormUrlEncodedBody(
-      ("firstname", firstName),
+      ("firstName", firstName),
       ("lastName", lastName),
       ("email",email),
       ("password",password),

@@ -1,15 +1,14 @@
 package controllers
 
+import connectors.StoreUserDetailsConnector
 import forms.NewAccountForm._
-import models.UserData
 import javax.inject.{Inject, Singleton}
-import play.api.mvc._
-import play.api.data._
+import models.UserData
 import play.api.i18n.I18nSupport
+import play.api.mvc._
 import views.html.create_account
 
 import scala.concurrent.{ExecutionContext, Future}
-import connectors.StoreUserDetailsConnector
 
 @Singleton
 class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
@@ -29,23 +28,10 @@ class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
         formWithErrors => {
           Future.successful(BadRequest(create_account(formWithErrors)))
         },
-        success => Future.successful(Ok)
+        success => {
+          storeUserDetailsConnector.storeUserDetails(UserData(success.firstName, success.lastName, success.email, success.password))
+          Future.successful(Ok)
+        }
       )
   }
-
-//  def submit(): Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] =>
-//    val errorFunction = { formWithErrors: Form[NewAccountForm] =>
-//      BadRequest(views.html.create_account(formWithErrors))
-//    }
-//
-//    val successFunction = { newAccount: NewAccountForm =>
-//      // This is the good case, where the form was successfully parsed as a Data object.
-//      val newUser = UserData(firstName = newAccount.firstName, lastName = newAccount.lastName, email = newAccount.email, password = newAccount.password)
-//      storeUserDetailsConnector.storeUserDetails(newUser)
-//      Redirect(routes.LoginPageController.show())
-//    }
-//
-//    val formValidationResult = NewAccountForm.newAccountForm.bindFromRequest
-//    formValidationResult.fold(errorFunction, successFunction)
-//  }
 }

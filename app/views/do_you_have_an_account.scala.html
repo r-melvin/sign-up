@@ -3,30 +3,30 @@
 @import views.html.main
 @import views.html.helpers.{summaryErrorHelper, radioButtonHelper}
 
-@(yesNoForm: Form[YesNoModel], action: Call)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[YesNoModel])(implicit request: RequestHeader, messages: Messages)
 
 @main(title = Messages("doYouHaveAnAccount.title")) {
 
-    @summaryErrorHelper(yesNoForm)
+    @summaryErrorHelper(form)
 
     <h1 class="heading-large">@Messages("doYouHaveAnAccount.heading")</h1>
 
     <div class="container-fluid">
-        <form method="@action.method" action="@action.url">
+        @helper.form(controllers.routes.DoYouHaveAnAccountController.submit()) {
             @CSRF.formField
             @radioButtonHelper(
-                parentForm = yesNoForm,
+                parentForm = form,
                 inline = true,
                 options = Seq(
                     ("yes", Messages("common.yes")),
                     ("no", Messages("common.no"))
                 ),
                 legend = Messages("doYouHaveAnAccount.heading"),
-                field = yesNoForm("answer")
+                field = form("answer")
             )
             <div class="form-group">
                 <button id="continue" class="btn btn-primary" type="submit">@Messages("common.continue")</button>
             </div>
-        </form>
     </div>
+    }
 }
