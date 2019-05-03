@@ -1,29 +1,14 @@
 package connectors
 
-import play.api.http.Status._
-import models._
-import play.api.Configuration
-import play.api.libs.json.{JsValue, Json}
-import javax.inject.Inject
-
-import scala.concurrent.Future
-import scala.concurrent.duration._
-import play.api.mvc._
-import play.api.libs.ws._
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl._
-import akka.util.ByteString
-import java.util.UUID.randomUUID
-
 import config.AppConfig
+import javax.inject.Inject
+import models._
 import models.forms.Credentials
+import play.api.http.Status._
+import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.{WSClient, _}
 
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.libs.ws.WSClient
-
-import scala.util.Random
 
 class StoreUserDetailsConnector @ Inject()(config: AppConfig, ws: WSClient)(implicit ec: ExecutionContext) {
   def storeUserDetails(details: UserData): Future[Either[String, JsValue]] = {

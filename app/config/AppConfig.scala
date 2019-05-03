@@ -1,6 +1,6 @@
 package config
 
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.ConfigFactory
 
 class AppConfig {
   val config = ConfigFactory.load()

@@ -4,6 +4,7 @@ import forms.LoginForm
 import javax.inject.{Inject, Singleton}
 import play.api.mvc._
 import views.html.login
+
 import scala.concurrent.Future
 
 @Singleton

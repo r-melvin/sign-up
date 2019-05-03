@@ -1,7 +1,7 @@
 package controllers
 
-import javax.inject.{Inject, Singleton}
 import forms.YesNoForm.yesNoForm
+import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, MessagesAbstractController, MessagesControllerComponents}
 
 import scala.concurrent.Future
