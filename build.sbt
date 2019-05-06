@@ -15,3 +15,9 @@ libraryDependencies ++= Seq(
 "de.leanovate.play-mockws" %% "play-mockws" % "2.6.6" % Test,
   "org.mockito" % "mockito-core" % "2.13.0" % "test",
 ehcache)
+
+coverageMinimum := 80
+
+coverageHighlighting := true
+
+coverageExcludedPackages := "<empty>;Reverse.*;router\\.*"

@@ -59,7 +59,7 @@ class NewAccountFormSpec extends WordSpec with Matchers {
           boundForm.errors.size shouldBe 2
         }
 
-        "contain the error message keys 'firstName.required.error' and 'astName.required.error'" in {
+        "contain the error message keys 'firstName.required.error' and 'lastName.required.error'" in {
 
           boundForm.errors.contains(FormError("firstName", "firstName.required.error")) &&
             boundForm.errors.contains(FormError("lastName", "lastName.required.error"))

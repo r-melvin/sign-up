@@ -11,4 +11,6 @@ object TestData {
 
   val userData = UserData("Joe", "Bloggs", "example@example.com", "p2ssword")
 
+  val userId = "12345678900987654321"
+
 }
