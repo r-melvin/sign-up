@@ -6,16 +6,12 @@ import javax.inject.{Inject, Singleton}
 import models.UserData
 import play.api.i18n.I18nSupport
 import play.api.mvc._
-import services.SessionService
 import views.html.create_account
-import services.SessionService._
-
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
                                         storeUserDetailsConnector: StoreUserDetailsConnector,
-                                        sessionService: SessionService
                                        )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) with I18nSupport {
 
   def show(): Action[AnyContent] = Action.async {
@@ -36,10 +32,11 @@ class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
             success.firstName,
             success.lastName,
             success.email,
-            success.password),
-            sessionService.retrieveRequestIdFromSession(request))
+            success.password
+          ))
           Future.successful(Ok)
         }
       )
+
   }
 }

@@ -36,7 +36,7 @@ class StoreUserDetailsConnectorSpec extends PlaySpec with ScalaFutures with Resu
       val ws = MockWS(testRoute)
       val connector = new StoreUserDetailsConnector(appConfig, ws)
 
-      val result = Await.result(connector.storeUserDetails(userData, userId), 5 seconds)
+      val result = Await.result(connector.storeUserDetails(userData), 5 seconds)
 
       result mustBe Right(Json.toJson(credentials))
     }
@@ -51,7 +51,7 @@ class StoreUserDetailsConnectorSpec extends PlaySpec with ScalaFutures with Resu
       val ws = MockWS(testRoute)
       val connector = new StoreUserDetailsConnector(appConfig, ws)
 
-      val result = Await.result(connector.storeUserDetails(UserData("", "", "", ""), userId), 5 seconds)
+      val result = Await.result(connector.storeUserDetails(UserData("", "", "", "")), 5 seconds)
       result mustBe Left("An error occurred")
     }
   }

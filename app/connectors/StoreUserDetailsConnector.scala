@@ -12,10 +12,10 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class StoreUserDetailsConnector @Inject()(config: AppConfig, ws: WSClient)(implicit ec: ExecutionContext) {
 
-  def storeUserDetails(details: UserData, requestId: String): Future[Either[String, JsValue]] = {
+  def storeUserDetails(details: UserData): Future[Either[String, JsValue]] = {
     val url = s"${config.signUpUrl}/store-user-details"
+    val data = Json.toJson(details)
     val request: WSRequest = ws.url(url)
-    val data = Json.toJsObject(details) ++ Json.obj("requestId" -> requestId)
     request
       .addHttpHeaders("Content-Type" -> "application/json")
       .post(data)

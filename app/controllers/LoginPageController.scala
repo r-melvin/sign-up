@@ -1,14 +1,17 @@
 package controllers
 
+import connectors.PostLoginDetailsConnector
 import forms.LoginForm
 import javax.inject.{Inject, Singleton}
+import models.forms.Credentials
 import play.api.mvc._
 import views.html.login
 
 import scala.concurrent.Future
 
 @Singleton
-class LoginPageController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) {
+class LoginPageController @Inject()(mcc: MessagesControllerComponents,
+                                    postLoginDetailsConnector: PostLoginDetailsConnector) extends MessagesAbstractController(mcc) {
 
   def show(): Action[AnyContent] = Action.async {
     implicit request =>
@@ -23,7 +26,10 @@ class LoginPageController @Inject()(mcc: MessagesControllerComponents) extends M
         formWithErrors => {
           Future.successful(BadRequest(login(formWithErrors)))
         },
-        successfulLogin => Future.successful(Ok)
+        successfulLogin => {
+          postLoginDetailsConnector.postLoginDetails(Credentials(successfulLogin.email, successfulLogin.password))
+          Future.successful(Ok)
+        }
       )
   }
 }

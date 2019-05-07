@@ -11,20 +11,17 @@ import play.api.mvc.MessagesControllerComponents
 import play.api.test.CSRFTokenHelper._
 import play.api.test.Helpers._
 import play.api.test._
-import services.SessionService
 import utils.TestData._
 
-class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite with MockitoSugar with ArgumentMatchers{
-
-  val mockSessionService = mock[SessionService]
+class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite with MockitoSugar {
 
   val mockStoreUserDetailsConnector = mock[StoreUserDetailsConnector]
 
   val mcc = app.injector.instanceOf[MessagesControllerComponents]
 
-  val controller = new CreateAccountController(mcc, mockStoreUserDetailsConnector, mockSessionService)
+//  val controller = new CreateAccountController(mcc, mockStoreUserDetailsConnector)
 
-//  val controller = app.injector.instanceOf[CreateAccountController]
+  val controller = app.injector.instanceOf[CreateAccountController]
 
   val testGetRequest = FakeRequest("GET ", "/create-account").withCSRFToken
 
@@ -32,20 +29,17 @@ class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite with
                   lastName: String,
                   email: String,
                   password: String,
-                  confirmPassword: String,
-                  requsetId: String) =
+                  confirmPassword: String) =
     FakeRequest("POST", "/create-account").withFormUrlEncodedBody(
       ("firstName", firstName),
       ("lastName", lastName),
       ("email",email),
       ("password",password),
-      ("confirmPassword", confirmPassword),
-      ("requsetId", requsetId)
+      ("confirmPassword", confirmPassword)
     ).withCSRFToken
 
   "show" should {
     "render the login page from a new instance of LoginPageController" in {
-      when(mockSessionService.retrieveRequestIdFromSession(any())) thenReturn userId
       val result = controller.show()(testGetRequest)
 
       status(result) mustBe OK
@@ -55,17 +49,13 @@ class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite with
 
   "submit" should {
     "return a 400 when invalid form data is submitted" in {
-      when(mockSessionService.retrieveRequestIdFromSession(any())) thenReturn userId
-
-      val result = controller.submit()(postRequest("", "", "fhkdjkdsf", "p2ssword", "p3ssword", userId))
+      val result = controller.submit()(postRequest("", "", "fhkdjkdsf", "p2ssword", "p3ssword"))
 
       status(result) mustBe BAD_REQUEST
     }
 
     "return a 200 when valid data is submitted" in {
-      when(mockSessionService.retrieveRequestIdFromSession(any())) thenReturn userId
-
-      val result = controller.submit()(postRequest("joseph", "bloggs", "example@example.com", "p2ssword", "p2ssword", userId))
+      val result = controller.submit()(postRequest("joseph", "bloggs", "example@example.com", "p2ssword", "p2ssword"))
 
       status(result) mustBe OK
     }

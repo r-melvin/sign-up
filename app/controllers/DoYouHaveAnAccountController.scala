@@ -1,17 +1,13 @@
 package controllers
 
-import connectors.GetRequestIdConnector
 import forms.YesNoForm.yesNoForm
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, MessagesAbstractController, MessagesControllerComponents}
-import services.SessionService
 
 import scala.concurrent.Future
 
 @Singleton
-class DoYouHaveAnAccountController @Inject()(mcc: MessagesControllerComponents,
-                                             getRequestIdConnector: GetRequestIdConnector,
-                                             sessionService: SessionService) extends MessagesAbstractController(mcc) {
+class DoYouHaveAnAccountController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) {
 
   def show(): Action[AnyContent] = Action.async {
     implicit request =>
@@ -35,7 +31,6 @@ class DoYouHaveAnAccountController @Inject()(mcc: MessagesControllerComponents,
             case "no" =>
               Future.successful(
                 Redirect(routes.CreateAccountController.show())
-                  .addingToSession("requestId" -> sessionService.getGeneratedRequestId().toString)
               )
 
           }
