@@ -1,17 +1,13 @@
 package controllers
 
 import connectors.StoreUserDetailsConnector
-import org.mockito._
 import org.scalatest.mockito.MockitoSugar
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.mvc.MessagesControllerComponents
 import play.api.test.CSRFTokenHelper._
 import play.api.test.Helpers._
 import play.api.test._
-import utils.TestData._
 
 class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite with MockitoSugar {
 

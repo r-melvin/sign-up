@@ -34,7 +34,7 @@ class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
             success.email,
             success.password
           ))
-          Future.successful(Ok)
+          Future.successful(Redirect(routes.YourDetailsController.show))
         }
       )
 

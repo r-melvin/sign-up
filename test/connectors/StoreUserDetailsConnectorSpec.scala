@@ -1,22 +1,20 @@
 package connectors
 
-import akka.actor.Status.Success
 import akka.stream.Materializer
 import config.AppConfig
 import mockws.{MockWS, Route}
 import models.UserData
-import models.forms.Credentials
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Action, ControllerComponents, Results}
+import play.api.libs.json.Json
+import play.api.mvc.{ControllerComponents, Results}
 import utils.TestData._
 
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 class StoreUserDetailsConnectorSpec extends PlaySpec with ScalaFutures with Results with MockitoSugar with GuiceOneServerPerSuite {
 

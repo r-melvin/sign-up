@@ -1,0 +1,35 @@
+@import views.html.main
+@import views.html.helpers.summaryErrorHelper
+
+@()(implicit request: RequestHeader, messages: Messages)
+
+@main(title = Messages("yourDetails.title")) {
+
+    <h1>@Messages("yourDetails.heading")</h1>
+
+    <table>
+        <caption class="heading-small">Your Details</caption>
+        <tbody>
+            <tr>
+                <td>First Name</td>
+                <td>Joe</td>
+                <td>change</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>Bloggs</td>
+                <td>change</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>example@@example.com</td>
+                <td>change</td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>********</td>
+                <td>change</td>
+            </tr>
+        </tbody>
+    </table>
+}

@@ -28,7 +28,7 @@ class LoginPageController @Inject()(mcc: MessagesControllerComponents,
         },
         successfulLogin => {
           postLoginDetailsConnector.postLoginDetails(Credentials(successfulLogin.email, successfulLogin.password))
-          Future.successful(Ok)
+          Future.successful(Redirect(routes.YourDetailsController.show))
         }
       )
   }
