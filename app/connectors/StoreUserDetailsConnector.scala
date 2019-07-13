@@ -1,41 +1,47 @@
 package connectors
 
+import config.AppConfig
+import connectors.StoreUserDetailsConnector._
+import javax.inject.{Inject, Singleton}
 import play.api.http.Status._
-import models.{Credentials, UserData}
-import play.api.Configuration
-import play.api.libs.json.{JsValue, Json}
-import javax.inject.Inject
-
-import scala.concurrent.Future
-import scala.concurrent.duration._
-import play.api.mvc._
-import play.api.libs.ws._
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
-import akka.stream.ActorMaterializer
-import akka.stream.scaladsl._
-import akka.util.ByteString
-import java.util.UUID.randomUUID
-
-import scala.concurrent.{ExecutionContext, Future}
+import play.api.libs.json.JsObject
 import play.api.libs.ws.WSClient
 
-import scala.util.Random
+import scala.concurrent.{ExecutionContext, Future}
 
-class StoreUserDetailsConnector @ Inject()(ws: WSClient)(implicit ec: ExecutionContext) {
-  def storeUserDetails(details: UserData): Future[Either[String, JsValue]] = {
-    val request: WSRequest = ws.url("http://localhost:9001/")
-    request
+@Singleton
+class StoreUserDetailsConnector @Inject()(config: AppConfig, ws: WSClient)(implicit ec: ExecutionContext) {
+
+  def storeUserDetails(id: String, userDetails: JsObject): Future[StoreUserDetailsResponse] = {
+    def url(id: String) = s"${config.signUpUrl}/store-user-details/$id"
+
+    ws.url(url(id))
       .addHttpHeaders("Content-Type" -> "application/json")
-      .post(Json.toJson(details))
+      .post(userDetails)
       .map(response =>
         response.status match {
           case CREATED =>
-            Right(Json.toJson(Credentials(details.email, details.password)))
+            Right(UserDetailsStored)
           case INTERNAL_SERVER_ERROR =>
-            Left("Gutted")
+            Left(DatabaseFailure)
+          case BAD_REQUEST =>
+            Left(InvalidJson)
         }
       )
-
   }
+
+}
+
+object StoreUserDetailsConnector {
+
+  type StoreUserDetailsResponse = Either[StoreUserDetailsFailure, UserDetailsStored.type]
+
+  case object UserDetailsStored
+
+  sealed trait StoreUserDetailsFailure
+
+  case object DatabaseFailure extends StoreUserDetailsFailure
+
+  case object InvalidJson extends StoreUserDetailsFailure
+
 }

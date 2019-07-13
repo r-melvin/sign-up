@@ -1,11 +1,7 @@
 package models
 
-import play.api.libs.json._
+sealed trait YesNoModel
 
-case class YesNoModel(answer: Option[String]) {
-  def getYesNoValue: String = answer.getOrElse("no")
-}
+case object Yes extends YesNoModel
 
-object YesNoModel {
-  implicit val format: OFormat[YesNoModel] = Json.format[YesNoModel]
-}
+case object No extends YesNoModel

@@ -1,7 +1,9 @@
 package config
 
-import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
 
-trait AppConfig {
-
+class AppConfig {
+  val config = ConfigFactory.load()
+  val appName = config.getString("app.name")
+  val signUpUrl = config.getString("sign-up.url")
 }

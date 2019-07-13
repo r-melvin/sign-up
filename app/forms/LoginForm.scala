@@ -1,18 +1,22 @@
 package forms
 
+import models.LoginDetailsModel
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
 
-case class LoginForm(email: String, password: String)
-
 object LoginForm {
 
-  val loginForm = Form(
+  val loginForm: Form[LoginDetailsModel] = Form(
     mapping(
-      "email" -> nonEmptyText,
-      "password" -> nonEmptyText
-    )(LoginForm.apply)(LoginForm.unapply)
+      "email" -> text
+        .verifying("email.required.error", _.nonEmpty)
+        .verifying(emailAddress(errorMessage = "email.format.error")),
+      "password" -> text
+        .verifying("password.required.error", _.length != 0)
+        .verifying("password.length.error", _.length > 7)
+        .verifying("password.length.error", _.length < 21)
+    )(LoginDetailsModel.apply)(LoginDetailsModel.unapply)
   )
 }
 

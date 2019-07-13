@@ -1,9 +1,9 @@
 @import helper._
-@import forms.LoginForm
+@import models.LoginDetailsModel
 @import views.html.main
 @import views.html.helpers.summaryErrorHelper
 
-@(form: Form[LoginForm], action: Call)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[LoginDetailsModel])(implicit request: RequestHeader, messages: Messages)
 
 @main(title = Messages("login.title")) {
 
@@ -11,13 +11,12 @@
 
 
     <h1 id="choose">@Messages("login.heading")</h1>
-
-        <form method="@action.method" action="@action.url">
-            @CSRF.formField
+        @helper.form(routes.LoginPageController.submit()) {
+            @helper.CSRF.formField
             <div class="form-row align-items-center">
                 <div class="col-sm-3 my-1">
-                    <label class="sr-only" for="inputUsername">@Messages("common.username")</label>
-                    <input type="text" class="form-control" id="inputUsername" placeholder="@Messages("common.username")">
+                    <label class="sr-only" for="inputEmail">@Messages("common.email")</label>
+                    <input type="text" class="form-control" id="inputEmail" placeholder="@Messages("common.email")">
                 </div>
                 <div class="col-sm-3 my-1">
                     <label class="sr-only" for="inputPassword">@Messages("common.password")</label>
@@ -29,5 +28,5 @@
                     <button type="submit" class="btn btn-primary">@Messages("common.submit")</button>
                 </div>
             </div>
-        </form>
     }
+}

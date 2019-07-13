@@ -1,37 +1,40 @@
 package controllers
 
-import forms.NewAccount
-import models.UserData
+import connectors.StoreUserDetailsConnector.UserDetailsStored
+import forms.NewAccountForm._
 import javax.inject.{Inject, Singleton}
-import play.api.mvc._
-import play.api.data._
 import play.api.i18n.I18nSupport
+import play.api.mvc._
+import services.StoreUserDetailsService
+import views.html.create_account
 
 import scala.concurrent.{ExecutionContext, Future}
-import connectors.StoreUserDetailsConnector
 
 @Singleton
 class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
-                                        storeUserDetailsConnector: StoreUserDetailsConnector
-                                       )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) with I18nSupport {
+                                        storeUserDetailsService: StoreUserDetailsService
+                                       )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) {
 
-  def show() = Action { implicit request =>
-      Ok(views.html.create_account(NewAccount.newAccountForm))
+  def show(): Action[AnyContent] = Action.async {
+    implicit request =>
+      Future.successful(
+        Ok(views.html.create_account(newAccountForm))
+      )
   }
 
-  def submit() = Action { implicit request: MessagesRequest[AnyContent] =>
-    val errorFunction = { formWithErrors: Form[NewAccount] =>
-      BadRequest(views.html.create_account(formWithErrors))
-    }
+  def submit(): Action[AnyContent] = Action.async {
+    implicit request =>
+      newAccountForm.bindFromRequest().fold(
+        formWithErrors => {
+          Future.successful(BadRequest(create_account(formWithErrors)))
+        },
+        newAccountModel => {
+          storeUserDetailsService.storeUserDetails(newAccountModel) map {
+            case Right(UserDetailsStored) => Redirect(routes.YourDetailsController.show())
+            case Left(_) => throw new Exception
+          }
+        }
+      )
 
-    val successFunction = { newAccount: NewAccount =>
-      // This is the good case, where the form was successfully parsed as a Data object.
-      val newUser = UserData(firstName = newAccount.firstName, lastName = newAccount.lastName, email = newAccount.email, password = newAccount.password)
-      storeUserDetailsConnector.storeUserDetails(newUser)
-      Redirect(routes.LoginPageController.show())
-    }
-
-    val formValidationResult = NewAccount.newAccountForm.bindFromRequest
-    formValidationResult.fold(errorFunction, successFunction)
   }
 }
