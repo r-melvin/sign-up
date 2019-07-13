@@ -1,17 +1,16 @@
 package forms
 
-import models.forms.YesNoModel
+import models.Yes
 import org.scalatest.{Matchers, WordSpec}
 import play.api.data.FormError
 
-class YesNoFormSpec extends WordSpec with Matchers{
+class YesNoFormSpec extends WordSpec with Matchers {
 
   "The YesNoForm" should {
 
     val form = YesNoForm.yesNoForm
 
     "bind with no errors" when {
-
       "Yes is selected as an answer" in {
         form.bind(Map("answer" -> "yes")).errors.size shouldEqual 0
       }
@@ -21,12 +20,11 @@ class YesNoFormSpec extends WordSpec with Matchers{
       }
 
       "supplied with a valid YesNoModel" in {
-        form.fill(YesNoModel(Some("yes"))).errors.size shouldEqual 0
+        form.fill(Yes).errors.size shouldEqual 0
       }
     }
 
     "bind with errors" when {
-
       "no answer is provided" should {
         val boundForm = form.bind(Map("answer" -> ""))
 

@@ -1,17 +1,19 @@
 package controllers
 
-import connectors.PostLoginDetailsConnector
+import connectors.CheckLoginDetailsConnector.{LoginDetailsDoNotMatch, LoginDetailsMatch, LoginDetailsNotFound}
 import forms.LoginForm
 import javax.inject.{Inject, Singleton}
-import models.forms.Credentials
+import play.api.i18n.I18nSupport
 import play.api.mvc._
+import services.CheckLoginDetailsService
 import views.html.login
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class LoginPageController @Inject()(mcc: MessagesControllerComponents,
-                                    postLoginDetailsConnector: PostLoginDetailsConnector) extends MessagesAbstractController(mcc) {
+                                    checkLoginDetailsService: CheckLoginDetailsService
+                                   )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) with I18nSupport {
 
   def show(): Action[AnyContent] = Action.async {
     implicit request =>
@@ -26,9 +28,13 @@ class LoginPageController @Inject()(mcc: MessagesControllerComponents,
         formWithErrors => {
           Future.successful(BadRequest(login(formWithErrors)))
         },
-        successfulLogin => {
-          postLoginDetailsConnector.postLoginDetails(Credentials(successfulLogin.email, successfulLogin.password))
-          Future.successful(Redirect(routes.YourDetailsController.show))
+        loginDetailsModel => {
+          checkLoginDetailsService.checkLoginDetails(loginDetailsModel) map {
+            case Right(LoginDetailsMatch) => Redirect(routes.YourDetailsController.show())
+            case Left(LoginDetailsDoNotMatch) => NotImplemented
+            case Left(LoginDetailsNotFound) => NotImplemented
+            case Left(_) => throw new Exception
+          }
         }
       )
   }

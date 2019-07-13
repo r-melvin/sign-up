@@ -1,18 +1,19 @@
 package controllers
 
-import connectors.StoreUserDetailsConnector
+import connectors.StoreUserDetailsConnector.UserDetailsStored
 import forms.NewAccountForm._
 import javax.inject.{Inject, Singleton}
-import models.UserData
 import play.api.i18n.I18nSupport
 import play.api.mvc._
+import services.StoreUserDetailsService
 import views.html.create_account
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
-                                        storeUserDetailsConnector: StoreUserDetailsConnector,
-                                       )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) with I18nSupport {
+                                        storeUserDetailsService: StoreUserDetailsService
+                                       )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) {
 
   def show(): Action[AnyContent] = Action.async {
     implicit request =>
@@ -27,14 +28,11 @@ class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
         formWithErrors => {
           Future.successful(BadRequest(create_account(formWithErrors)))
         },
-        success => {
-          storeUserDetailsConnector.storeUserDetails(UserData(
-            success.firstName,
-            success.lastName,
-            success.email,
-            success.password
-          ))
-          Future.successful(Redirect(routes.YourDetailsController.show))
+        newAccountModel => {
+          storeUserDetailsService.storeUserDetails(newAccountModel) map {
+            case Right(UserDetailsStored) => Redirect(routes.YourDetailsController.show())
+            case Left(_) => throw new Exception
+          }
         }
       )
 

@@ -1,6 +1,6 @@
 package forms
 
-import models.forms.NewAccountModel
+import models.NewAccountModel
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._

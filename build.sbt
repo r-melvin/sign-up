@@ -1,23 +1,32 @@
-name := """sign-up"""
-organization := "com.ben10"
+val appName = "sign-up-frontend"
 
-version := "1.0-SNAPSHOT"
+lazy val scoverageSettings = {
+  import scoverage.ScoverageKeys
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+  Seq(
+    ScoverageKeys.coverageExcludedPackages := "<empty>;Reverse.*;router\\.*",
+    ScoverageKeys.coverageMinimum := 90,
+    ScoverageKeys.coverageFailOnMinimum := false,
+    ScoverageKeys.coverageHighlighting := true
+  )
+}
 
-scalaVersion := "2.12.8"
+lazy val microservice = Project(appName, file("."))
+  .enablePlugins(play.sbt.PlayScala)
+  .configs(IntegrationTest)
+  .settings(
+    Defaults.itSettings,
+    libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
+    dependencyOverrides ++= AppDependencies.overrides,
+    scoverageSettings,
+    PlayKeys.playDefaultPort := 9002
+  )
 
-libraryDependencies ++= Seq(
-  guice,
-  ws,
-"org.scalatestplus.play" %% "scalatestplus-play" % "4.0.1" % Test,
-"org.jsoup" % "jsoup" % "1.11.3" % Test,
-"de.leanovate.play-mockws" %% "play-mockws" % "2.6.6" % Test,
-  "org.mockito" % "mockito-core" % "2.13.0" % "test",
-ehcache)
+Keys.fork in Test := true
+javaOptions in Test += "-Dlogger.resource=logback.xml"
+parallelExecution in Test := true
 
-coverageMinimum := 80
-
-coverageHighlighting := true
-
-coverageExcludedPackages := "<empty>;Reverse.*;router\\.*"
+Keys.fork in IntegrationTest := true
+unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest) (base => Seq(base / "it")).value
+javaOptions in IntegrationTest += "-Dlogger.resource=logback.xml"
+parallelExecution in IntegrationTest := false

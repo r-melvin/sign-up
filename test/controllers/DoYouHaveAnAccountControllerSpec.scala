@@ -30,7 +30,7 @@ class DoYouHaveAnAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite
       redirectLocation(result) mustBe Some(routes.LoginPageController.show().url)
     }
 
-    "got to the create account page when answering no" in {
+    "go to the create account page when answering no" in {
       val result = controller.submit()(postRequest("no"))
       status(result) mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(routes.CreateAccountController.show().url)

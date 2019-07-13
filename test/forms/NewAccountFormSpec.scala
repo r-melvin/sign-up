@@ -1,10 +1,12 @@
 package forms
 
-import models.forms.NewAccountModel
+import models.NewAccountModel
 import org.scalatest.{Matchers, WordSpec}
 import play.api.data.FormError
 
 class NewAccountFormSpec extends WordSpec with Matchers {
+
+  //TODO Fix the failing tests
 
   "The NewAcountForm" should {
 

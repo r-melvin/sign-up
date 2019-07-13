@@ -1,6 +1,6 @@
 package forms
 
-import models.forms.Credentials
+import models.LoginDetailsModel
 import org.scalatest.{Matchers, WordSpec}
 import play.api.data.FormError
 
@@ -15,7 +15,7 @@ class LoginFormSpec extends WordSpec with Matchers{
     }
 
     "bind with no errors when supplied with a valid Crendentials" in {
-      form.fill(Credentials("example@example.com", "p2ssword")).errors.size shouldEqual 0
+      form.fill(LoginDetailsModel("example@example.com", "p2ssword")).errors.size shouldEqual 0
     }
 
     "bind with an error" when {

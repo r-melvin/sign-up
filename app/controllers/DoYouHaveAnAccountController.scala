@@ -2,6 +2,7 @@ package controllers
 
 import forms.YesNoForm.yesNoForm
 import javax.inject.{Inject, Singleton}
+import models.{No, Yes}
 import play.api.mvc.{Action, AnyContent, MessagesAbstractController, MessagesControllerComponents}
 
 import scala.concurrent.Future
@@ -23,18 +24,17 @@ class DoYouHaveAnAccountController @Inject()(mcc: MessagesControllerComponents) 
           Future.successful(
             BadRequest(views.html.do_you_have_an_account(formWithErrors))
           ),
-        success =>
-          success.answer.get match {
-            case "yes" => Future.successful(
+        {
+          case Yes =>
+            Future.successful(
               Redirect(routes.LoginPageController.show())
             )
-            case "no" =>
-              Future.successful(
-                Redirect(routes.CreateAccountController.show())
-              )
-
-          }
+          case No =>
+            Future.successful(
+              Redirect(routes.CreateAccountController.show())
+            )
+        }
       )
-
   }
+
 }

@@ -1,42 +1,28 @@
 package controllers
 
-import connectors.StoreUserDetailsConnector
-import org.scalatest.mockito.MockitoSugar
+import connectors.StoreUserDetailsConnector.UserDetailsStored
+import models.NewAccountModel
 import org.scalatestplus.play._
-import org.scalatestplus.play.guice._
-import play.api.mvc.MessagesControllerComponents
 import play.api.test.CSRFTokenHelper._
+import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.test._
+import services.mocks.MockStoreUserDetailsService
 
-class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite with MockitoSugar {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-  val mockStoreUserDetailsConnector = mock[StoreUserDetailsConnector]
+class CreateAccountControllerSpec extends PlaySpec with MockStoreUserDetailsService {
 
-  val mcc = app.injector.instanceOf[MessagesControllerComponents]
-
-//  val controller = new CreateAccountController(mcc, mockStoreUserDetailsConnector)
-
-  val controller = app.injector.instanceOf[CreateAccountController]
-
-  val testGetRequest = FakeRequest("GET ", "/create-account").withCSRFToken
-
-  def postRequest(firstName: String,
-                  lastName: String,
-                  email: String,
-                  password: String,
-                  confirmPassword: String) =
-    FakeRequest("POST", "/create-account").withFormUrlEncodedBody(
-      ("firstName", firstName),
-      ("lastName", lastName),
-      ("email",email),
-      ("password",password),
-      ("confirmPassword", confirmPassword)
-    ).withCSRFToken
+  object TestCreateAccountController extends CreateAccountController(
+    stubMessagesControllerComponents(),
+    mockStoreUserDetailsService
+  )
 
   "show" should {
     "render the login page from a new instance of LoginPageController" in {
-      val result = controller.show()(testGetRequest)
+      val getRequest = FakeRequest("GET ", "/create-account").withCSRFToken
+
+      val result = TestCreateAccountController.show()(getRequest)
 
       status(result) mustBe OK
       contentType(result) mustBe Some("text/html")
@@ -44,16 +30,32 @@ class CreateAccountControllerSpec extends PlaySpec with GuiceOneAppPerSuite with
   }
 
   "submit" should {
-    "return a 400 when invalid form data is submitted" in {
-      val result = controller.submit()(postRequest("", "", "fhkdjkdsf", "p2ssword", "p3ssword"))
+    "redirect to YourAccount page when valid data is submitted" in {
+      val testNewAccountModel = NewAccountModel("firstName", "lastName", "email@email.com", "password", "password")
+      mockStoreUserDetails(testNewAccountModel)(Future.successful(Right(UserDetailsStored)))
+
+      val postRequest = FakeRequest("POST", "/create-account")
+        .withFormUrlEncodedBody(
+          ("firstName", "firstName"),
+          ("lastName", "lastName"),
+          ("email", "email@email.com"),
+          ("password", "password"),
+          ("confirmPassword", "password")
+        ).withCSRFToken
+
+      val result = TestCreateAccountController.submit()(postRequest)
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.YourDetailsController.show().url)
+    }
+
+    "return a BAD_REQUEST when invalid form data is submitted" in {
+      val invalidPostRequest = FakeRequest("POST", "/").withCSRFToken
+
+      val result = TestCreateAccountController.submit()(invalidPostRequest)
 
       status(result) mustBe BAD_REQUEST
     }
-
-    "return a 200 when valid data is submitted" in {
-      val result = controller.submit()(postRequest("joseph", "bloggs", "example@example.com", "p2ssword", "p2ssword"))
-
-      status(result) mustBe OK
-    }
   }
+
 }

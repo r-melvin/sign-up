@@ -1,6 +1,4 @@
-package models.forms
-
-import play.api.libs.json.{Json, OFormat}
+package models
 
 case class NewAccountModel(firstName: String,
                            lastName: String,
@@ -8,6 +6,3 @@ case class NewAccountModel(firstName: String,
                            password: String,
                            confirmPassword: String)
 
-object NewAccountModel {
-  implicit val formats: OFormat[NewAccountModel] = Json.format[NewAccountModel]
-}
