@@ -2,39 +2,38 @@ package controllers
 
 import forms.YesNoForm.yesNoForm
 import javax.inject.{Inject, Singleton}
-import play.api.mvc.{Action, AnyContent, MessagesAbstractController, MessagesControllerComponents}
+import models.{No, Yes}
+import play.api.mvc.{Action, AnyContent, MessagesBaseController, MessagesControllerComponents}
 
 import scala.concurrent.Future
 
 @Singleton
-class YourDetailsController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) {
+class YourDetailsController @Inject()(val controllerComponents: MessagesControllerComponents) extends MessagesBaseController {
 
-  def show(): Action[AnyContent] = Action.async {
+  val show: Action[AnyContent] = Action.async {
     implicit request =>
       Future.successful(
-        Ok(views.html.your_details())
+        Ok(views.html.your_details(yesNoForm))
       )
   }
 
-//  def submit(): Action[AnyContent] = Action.async {
-//    implicit request =>
-//      yesNoForm.bindFromRequest().fold(
-//        formWithErrors =>
-//          Future.successful(
-//            BadRequest(views.html.do_you_have_an_account(formWithErrors))
-//          ),
-//        success =>
-//          success.answer.get match {
-//            case "yes" => Future.successful(
-//              Redirect(routes.LoginPageController.show())
-//            )
-//            case "no" =>
-//              Future.successful(
-//                Redirect(routes.CreateAccountController.show())
-//              )
-//
-//          }
-//      )
-//
-//  }
+  val submit: Action[AnyContent] = Action.async {
+    implicit request =>
+      yesNoForm.bindFromRequest().fold(
+        formWithErrors =>
+          Future.successful(
+            BadRequest(views.html.your_details(formWithErrors))
+          ), {
+          case Yes =>
+            Future.successful(
+              Redirect(routes.LoginController.show())
+            )
+          case No =>
+            Future.successful(
+              Redirect(routes.CreateAccountController.show())
+            )
+        }
+      )
+  }
+
 }

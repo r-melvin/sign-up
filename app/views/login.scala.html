@@ -1,6 +1,5 @@
 @import helper._
 @import models.LoginDetailsModel
-@import views.html.main
 @import views.html.helpers.summaryErrorHelper
 
 @(form: Form[LoginDetailsModel])(implicit request: RequestHeader, messages: Messages)
@@ -9,10 +8,9 @@
 
     @summaryErrorHelper(form)
 
-
     <h1 id="choose">@Messages("login.heading")</h1>
-        @helper.form(routes.LoginPageController.submit()) {
-            @helper.CSRF.formField
+        @helper.form(routes.LoginController.submit()) {
+            @CSRF.formField
             <div class="form-row align-items-center">
                 <div class="col-sm-3 my-1">
                     <label class="sr-only" for="inputEmail">@Messages("common.email")</label>

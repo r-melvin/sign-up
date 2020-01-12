@@ -1,29 +1,24 @@
 @import play.api.data.Form
-@import play.api.data._
 
 @(form: Form[_])(implicit messages: Messages)
 
-@errors = @{
-    form.errors
-}
+    @errors = @{
+        form.errors
+    }
 
-@errMsg(err: FormError) = {
-    <li role="tooltip">
-        <a href="#@err.key">@{Messages(s"${err.message}")}</a>
-    </li>
-}
+    @errMsg(err: FormError) = {
+        <li role="tooltip">
+            <p>@{Messages(s"${err.message}")}</p>
+        </li>
+    }
 
-@if(form.hasErrors) {
+    @if(form.hasErrors) {
 
-<div class="flash error-summary error-summary--show"
-     id="error-summary-display"
-     role="alert"
-     aria-labelledby="error-summary-heading"
-     tabindex="-1">
-    <h2 id="error-summary-heading" class="h3-heading">@Messages("common.error_heading")</h2>
-    <ul>
-        @errors.map(errMsg)
-    </ul>
-</div>
+    <div class="flash error-summary error-summary--show" id="error-summary-display" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+        <h2 id="error-summary-heading" class="h3-heading">@Messages("common.error_heading")</h2>
+        <ul>
+            @errors.map(errMsg)
+        </ul>
+    </div>
 
 }

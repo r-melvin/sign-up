@@ -1,32 +1,29 @@
 package services
 
 import connectors.StoreUserDetailsConnector
-import connectors.StoreUserDetailsConnector.StoreUserDetailsResponse
+import connectors.StoreUserDetailsConnector.UserDetailsStored
 import javax.inject.{Inject, Singleton}
 import models.{LoginDetailsModel, NewAccountModel, UserDetailsModel}
-import play.api.libs.json.Json
 
 import scala.concurrent.Future
 
 @Singleton
-class StoreUserDetailsService @Inject()(idGenerationService: IdGenerationService,
-                                        storeUserDetailsConnector: StoreUserDetailsConnector) {
+class StoreUserDetailsService @Inject()(storeUserDetailsConnector: StoreUserDetailsConnector) {
 
-  protected def uuid = idGenerationService.uuid
+  def storeUserDetails(newAccountModel: NewAccountModel): Future[UserDetailsStored.type] = {
 
-  def storeUserDetails(newAccountModel: NewAccountModel): Future[StoreUserDetailsResponse] = {
+    val loginDetails = LoginDetailsModel(
+      newAccountModel.email,
+      newAccountModel.password
+    )
 
-    val userDetails =
-      UserDetailsModel(
-        newAccountModel.firstName,
-        newAccountModel.lastName,
-        LoginDetailsModel(
-          newAccountModel.email,
-          newAccountModel.password
-        )
-      )
+    val userDetails = UserDetailsModel(
+      newAccountModel.firstName,
+      newAccountModel.lastName,
+      loginDetails
+    )
 
-    storeUserDetailsConnector.storeUserDetails(uuid, Json.toJsObject(userDetails))
+    storeUserDetailsConnector.storeUserDetails(userDetails)
   }
 
 }

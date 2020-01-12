@@ -1,8 +1,7 @@
 # Keys                                            # Content
 
-#errors
+# Errors
 answer.error.chooseAnswer                       = Select a valid answer
-answer.error.chooseAnswer.field                 = Select a valid answer
 email.required.error                            = Enter an email address
 email.format.error                              = Enter a valid email address
 firstName.required.error                        = Enter your first name
@@ -12,26 +11,28 @@ password.confirm.required.error                 = Confirm your password
 password.length.error                           = Enter a password between 8 and 20 characters
 password.match.error                            = Enter the same password in both fields
 common.error_heading                            = There is a problem
-doYouHaveAnAccount.error.chooseAnswer           = Tell us if you already have an account with us
 
-#common
+# Common
 common.yes                                      = Yes
 common.no                                       = No
 common.continue                                 = Continue
 common.submit                                   = Submit
-common.username                                 = Username
 common.password                                 = Password
 common.email                                    = Email
 
-#Do You Have An Account
-doYouHaveAnAccount.title                        = Do you have an account?
-doYouHaveAnAccount.heading                      = Do you already have an account with us?
-doYouHaveAnAccount.info                         = Select ''Yes'' if you have previously created an account with us, otherwise select ''No'' to create a new account.
+# Do You Have An Account
+do_you_have_an_account.title                    = Do you have an account?
+do_you_have_an_account.heading                  = Do you already have an account with us?
+do_you_have_an_account.info                     = Select ''Yes'' if you have previously created an account with us, otherwise select ''No'' to create a new account.
 
-#Create Account
-createAccount.title                             = Create Account
-createAccount.heading                           = Create an account
+# Create Account
+create_account.title                            = Create Account
+create_account.heading                          = Create an account
 
-#Login Page
+# Login Page
 login.heading                                   = Login
 login.title                                     = Login
+
+# Your Details
+your_details.title                              = Enter Your Details
+your_details.heading                            = Enter Your Details

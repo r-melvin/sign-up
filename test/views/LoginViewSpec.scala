@@ -1,32 +1,30 @@
 package views
 
-import forms._
+import forms.LoginForm
 import org.jsoup.Jsoup
-import play.api.test.CSRFTokenHelper._
-import utils.TestHelper
+import org.jsoup.nodes.Document
+import views.helpers.ViewSpecHelper
 import views.html.login
 
-class LoginPageViewSpec extends TestHelper {
+class LoginViewSpec extends ViewSpecHelper {
 
-  lazy val emptyForm = LoginForm.loginForm
-  lazy val request = fakeRequest.withCSRFToken
+  lazy val document: Document = Jsoup.parse(login(LoginForm.loginForm).body)
 
   "Calling the DoYouHaveAccount view" should {
-    lazy val document = Jsoup.parse(login(emptyForm)(request, messages).body)
 
     "have the title 'Login'" in {
-      document.title shouldEqual "Login"
+      document.title mustBe "Login"
     }
 
     "have a single heading" which {
       lazy val heading = document.select("h1")
 
       "should be the only h1" in {
-        heading.size shouldEqual 1
+        heading.size mustBe 1
       }
 
       "should have the text 'Login'" in {
-        heading.text shouldBe "Login"
+        heading.text mustBe "Login"
       }
     }
 
@@ -34,11 +32,11 @@ class LoginPageViewSpec extends TestHelper {
       val formField = document.select("#inputEmail")
 
       "should accept text" in {
-        formField.attr("type") shouldEqual "text"
+        formField.attr("type") mustBe "text"
       }
 
       "should have a label" in {
-        document.select("label").first().attr("for") shouldEqual formField.attr("id")
+        document.select("label").first().attr("for") mustBe formField.attr("id")
       }
     }
 
@@ -46,11 +44,11 @@ class LoginPageViewSpec extends TestHelper {
       val formField = document.select("#inputPassword")
 
       "should accept text" in {
-        formField.attr("type") shouldEqual "text"
+        formField.attr("type") mustBe "text"
       }
 
       "should have a label" in {
-        document.select("label").get(1).attr("for") shouldEqual formField.attr("id")
+        document.select("label").get(1).attr("for") mustBe formField.attr("id")
       }
     }
 
@@ -58,7 +56,7 @@ class LoginPageViewSpec extends TestHelper {
       val button = document.select("button")
 
       "should have the text 'Submit" in {
-        button.text shouldEqual "Submit"
+        button.text mustBe "Submit"
       }
     }
   }

@@ -1,24 +1,19 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 
-# Initial page
-GET     /                                 controllers.DoYouHaveAnAccountController.show
-
-POST    /                                 controllers.DoYouHaveAnAccountController.submit
+# Do You Have An Account page
+GET     /have-an-account                  controllers.DoYouHaveAnAccountController.show
+POST    /have-an-account                  controllers.DoYouHaveAnAccountController.submit
 
 # Login Page
-GET     /login                            controllers.LoginPageController.show
-
-POST    /login                            controllers.LoginPageController.submit
+GET     /login                            controllers.LoginController.show
+POST    /login                            controllers.LoginController.submit
 
 # Create Account Page
-
 GET     /create-account                   controllers.CreateAccountController.show
-
 POST    /create-account                   controllers.CreateAccountController.submit
 
 # Your Details Page
-
 GET     /your-details                     controllers.YourDetailsController.show
 
 # Map static resources from the /public folder to the /assets URL path
