@@ -1,32 +1,29 @@
 package views
 
-import forms._
+import forms.NewAccountForm
 import org.jsoup.Jsoup
-import play.api.test.CSRFTokenHelper._
-import utils.TestHelper
+import org.jsoup.nodes.Document
+import views.helpers.ViewSpecHelper
 import views.html.create_account
 
-class CreateAccountViewSpec extends TestHelper {
+class CreateAccountViewSpec extends ViewSpecHelper {
 
-  lazy val emptyForm = NewAccountForm.newAccountForm
-  lazy val request = fakeRequest.withCSRFToken
+  lazy val document: Document = Jsoup.parse(create_account(NewAccountForm.newAccountForm).body)
 
   "Calling the CreateAccount view" should {
-    lazy val document = Jsoup.parse(create_account(emptyForm)(request, messages).body)
-
     "have the title 'Create Account'" in {
-      document.title shouldEqual "Create Account"
+      document.title mustBe "Create Account"
     }
 
     "have a single heading" which {
       lazy val heading = document.select("h1")
 
       "should be the only h1" in {
-        heading.size shouldEqual 1
+        heading.size mustBe 1
       }
 
       "should have the text 'Create an account'" in {
-        heading.text shouldBe "Create an account"
+        heading.text mustBe "Create an account"
       }
     }
 
@@ -34,18 +31,18 @@ class CreateAccountViewSpec extends TestHelper {
       val formField = document.select("#firstName")
 
       "should accept text" in {
-        formField.attr("type") shouldEqual "text"
+        formField.attr("type") mustBe "text"
       }
 
       "should have a label" which {
         val label = document.select("label").first()
 
         "should have the value 'First Name" in {
-          label.text shouldEqual "First Name"
+          label.text mustBe "First Name"
         }
 
         "should link to the form field" in {
-          label.attr("for") shouldEqual formField.attr("id")
+          label.attr("for") mustBe formField.attr("id")
         }
       }
     }
@@ -54,18 +51,18 @@ class CreateAccountViewSpec extends TestHelper {
       val formField = document.select("#lastName")
 
       "should accept text" in {
-        formField.attr("type") shouldEqual "text"
+        formField.attr("type") mustBe "text"
       }
 
       "should have a label" which {
         val label = document.select("label").get(1)
 
         "should have the value 'Last Name" in {
-          label.text shouldEqual "Last Name"
+          label.text mustBe "Last Name"
         }
 
         "should link to the form field" in {
-          label.attr("for") shouldEqual formField.attr("id")
+          label.attr("for") mustBe formField.attr("id")
         }
       }
     }
@@ -74,18 +71,18 @@ class CreateAccountViewSpec extends TestHelper {
       val formField = document.select("#email")
 
       "should accept text" in {
-        formField.attr("type") shouldEqual "text"
+        formField.attr("type") mustBe "text"
       }
 
       "should have a label" which {
         val label = document.select("label").get(2)
 
         "should have the value 'Email Address" in {
-          label.text shouldEqual "Email Address"
+          label.text mustBe "Email Address"
         }
 
         "should link to the form field" in {
-          label.attr("for") shouldEqual formField.attr("id")
+          label.attr("for") mustBe formField.attr("id")
         }
       }
     }
@@ -94,18 +91,18 @@ class CreateAccountViewSpec extends TestHelper {
       val formField = document.select("#password")
 
       "should accept text" in {
-        formField.attr("type") shouldEqual "text"
+        formField.attr("type") mustBe "text"
       }
 
       "should have a label" which {
         val label = document.select("label").get(3)
 
         "should have the value 'Password" in {
-          label.text shouldEqual "Password"
+          label.text mustBe "Password"
         }
 
         "should link to the form field" in {
-          label.attr("for") shouldEqual formField.attr("id")
+          label.attr("for") mustBe formField.attr("id")
         }
       }
     }
@@ -114,18 +111,18 @@ class CreateAccountViewSpec extends TestHelper {
       val formField = document.select("#confirmPassword")
 
       "should accept text" in {
-        formField.attr("type") shouldEqual "text"
+        formField.attr("type") mustBe "text"
       }
 
       "should have a label" which {
         val label = document.select("label").get(4)
 
         "should have the value 'Confirm Password" in {
-          label.text shouldEqual "Confirm Password"
+          label.text mustBe "Confirm Password"
         }
 
         "should link to the form field" in {
-          label.attr("for") shouldEqual formField.attr("id")
+          label.attr("for") mustBe formField.attr("id")
         }
       }
     }
@@ -134,7 +131,7 @@ class CreateAccountViewSpec extends TestHelper {
       val button = document.select("button")
 
       "should have the text 'Submit" in {
-        button.text shouldEqual "Submit"
+        button.text mustBe "Submit"
       }
     }
   }

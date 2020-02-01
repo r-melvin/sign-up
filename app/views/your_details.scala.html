@@ -1,11 +1,11 @@
-@import views.html.main
 @import views.html.helpers.summaryErrorHelper
+@import views.html.helper.CSRF
 
-@()(implicit request: RequestHeader, messages: Messages)
+@(form: Form[YesNoModel])(implicit request: RequestHeader, messages: Messages)
 
-@main(title = Messages("yourDetails.title")) {
+@main(title = Messages("your_details.title")) {
 
-    <h1>@Messages("yourDetails.heading")</h1>
+    <h1>@Messages("your_details.heading")</h1>
 
     <table>
         <caption class="heading-small">Your Details</caption>
@@ -32,4 +32,7 @@
             </tr>
         </tbody>
     </table>
+
+    @* Todo: Finish developing this page *@
+
 }

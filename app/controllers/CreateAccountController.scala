@@ -1,9 +1,7 @@
 package controllers
 
-import connectors.StoreUserDetailsConnector.UserDetailsStored
 import forms.NewAccountForm._
 import javax.inject.{Inject, Singleton}
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.StoreUserDetailsService
 import views.html.create_account
@@ -11,29 +9,28 @@ import views.html.create_account
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAccountController @Inject()(mcc: MessagesControllerComponents,
+class CreateAccountController @Inject()(val controllerComponents: MessagesControllerComponents,
                                         storeUserDetailsService: StoreUserDetailsService
-                                       )(implicit ec: ExecutionContext) extends MessagesAbstractController(mcc) {
+                                       )(implicit ec: ExecutionContext) extends MessagesBaseController {
 
-  def show(): Action[AnyContent] = Action.async {
+  val show: Action[AnyContent] = Action.async {
     implicit request =>
       Future.successful(
         Ok(views.html.create_account(newAccountForm))
       )
   }
 
-  def submit(): Action[AnyContent] = Action.async {
+  val submit: Action[AnyContent] = Action.async {
     implicit request =>
       newAccountForm.bindFromRequest().fold(
         formWithErrors => {
           Future.successful(BadRequest(create_account(formWithErrors)))
         },
-        newAccountModel => {
-          storeUserDetailsService.storeUserDetails(newAccountModel) map {
-            case Right(UserDetailsStored) => Redirect(routes.YourDetailsController.show())
-            case Left(_) => throw new Exception
+        newAccountModel =>
+          storeUserDetailsService.storeUserDetails(newAccountModel).map{
+            _ => Redirect(routes.YourDetailsController.show())
           }
-        }
+
       )
 
   }

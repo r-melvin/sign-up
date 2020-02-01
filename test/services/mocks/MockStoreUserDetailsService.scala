@@ -1,6 +1,6 @@
 package services.mocks
 
-import connectors.StoreUserDetailsConnector.StoreUserDetailsResponse
+import connectors.StoreUserDetailsConnector.UserDetailsStored
 import models.NewAccountModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
@@ -14,7 +14,7 @@ trait MockStoreUserDetailsService extends MockitoSugar {
 
   val mockStoreUserDetailsService: StoreUserDetailsService = mock[StoreUserDetailsService]
 
-  def mockStoreUserDetails(newAccountModel: NewAccountModel)(response: Future[StoreUserDetailsResponse]): OngoingStubbing[Future[StoreUserDetailsResponse]] = {
+  def mockStoreUserDetails(newAccountModel: NewAccountModel)(response: Future[UserDetailsStored.type]): OngoingStubbing[Future[UserDetailsStored.type]] = {
     when(mockStoreUserDetailsService.storeUserDetails(
       ArgumentMatchers.eq(newAccountModel)
     )) thenReturn response

@@ -1,15 +1,14 @@
 @import helper._
 @import models.YesNoModel
-@import views.html.main
 @import views.html.helpers.{summaryErrorHelper, radioButtonHelper}
 
 @(form: Form[YesNoModel])(implicit request: RequestHeader, messages: Messages)
 
-@main(title = Messages("doYouHaveAnAccount.title")) {
+@main(title = Messages("do_you_have_an_account.title")) {
 
     @summaryErrorHelper(form)
 
-    <h1 class="heading-large">@Messages("doYouHaveAnAccount.heading")</h1>
+    <h1 class="heading-large">@Messages("do_you_have_an_account.heading")</h1>
 
     <div class="container-fluid">
         @helper.form(controllers.routes.DoYouHaveAnAccountController.submit()) {
@@ -21,7 +20,7 @@
                     ("yes", Messages("common.yes")),
                     ("no", Messages("common.no"))
                 ),
-                legend = Messages("doYouHaveAnAccount.heading"),
+                legend = Messages("do_you_have_an_account.heading"),
                 field = form("answer")
             )
             <div class="form-group">

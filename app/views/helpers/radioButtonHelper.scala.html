@@ -1,20 +1,28 @@
-@(parentForm: Form[_], inline: Boolean, options: Seq[(String, String)], legend: String, field: Field)(implicit messages: Messages)
+@(parentForm: Form[_], inline: Boolean, options: Seq[(String, String)], legend: String, field: Field, hintText: Option[String] = None)(implicit messages: Messages)
 
-@hasError = @{
-    parentForm.error(field.name).isDefined
-}
+    @hasError = @{
+        parentForm.error(field.name).isDefined
+    }
 
-<div class="form-group@if(hasError){ form-field--error}">
-    <fieldset id="@{field.name}" @if(inline) { class="inline" }>
-        <legend class="visuallyhidden">@legend</legend>
+    <div class="form-group@if(hasError){ form-field--error}">
+
         @if(hasError){
-        <span class="error-notification" role="tooltip" id="error-message-@field.name">@{Messages(s"${parentForm.error(field.name).get.message}.field")}</span>
+            <span class="error-notification" role="tooltip" id="error-message-@field.name">
+            @Messages(s"${parentForm.error(field.name).get.message}.field")
+            </span>
         }
+
+        @hintText.map(hint => Html(s"""<span class="form-hint">$hint</span>"""))
+
+    <fieldset id="@{field.name}" class="@if(inline) { inline }">
+        <legend class="visuallyhidden">@legend</legend>
+
         @for(option <- options) {
-        <div class="multiple-choice">
-            <input id="@option._1" type="radio" name="@field.name" value="@option._1" data-journey-val="@option._1">
-            <label for="@option._1">@option._2</label>
-        </div>
+            <div class="multiple-choice">
+                <input id="@option._1" type="radio" name="@field.name" value="@option._1" data-journey-val="@option._1"
+                @if(parentForm.data.get(field.name).contains(option._1)) { checked="checked"}>
+                <label for="@option._1">@option._2</label>
+            </div>
         }
     </fieldset>
-</div>
+    </div>

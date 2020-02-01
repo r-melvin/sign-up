@@ -11,16 +11,16 @@ lazy val scoverageSettings = {
   )
 }
 
-lazy val microservice = Project(appName, file("."))
-  .enablePlugins(play.sbt.PlayScala)
-  .configs(IntegrationTest)
-  .settings(
-    Defaults.itSettings,
-    libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
-    dependencyOverrides ++= AppDependencies.overrides,
-    scoverageSettings,
-    PlayKeys.playDefaultPort := 9002
-  )
+lazy val microservice =
+  Project(appName, file("."))
+    .enablePlugins(play.sbt.PlayScala)
+    .configs(IntegrationTest)
+    .settings(
+      Defaults.itSettings,
+      libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
+      scoverageSettings,
+      PlayKeys.playDefaultPort := 9002
+    )
 
 Keys.fork in Test := true
 javaOptions in Test += "-Dlogger.resource=logback.xml"
@@ -28,5 +28,7 @@ parallelExecution in Test := true
 
 Keys.fork in IntegrationTest := true
 unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest) (base => Seq(base / "it")).value
-javaOptions in IntegrationTest += "-Dlogger.resource=logback.xml"
+javaOptions in IntegrationTest += "-Dlogger.resource=logback-it.xml"
 parallelExecution in IntegrationTest := false
+
+scalaVersion := "2.13.1"

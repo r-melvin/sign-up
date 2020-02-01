@@ -1,30 +1,29 @@
 package forms
 
 import models.LoginDetailsModel
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.play.PlaySpec
 import play.api.data.FormError
 
-class LoginFormSpec extends WordSpec with Matchers{
+class LoginFormSpec extends PlaySpec {
 
   "The LoginForm" should {
 
     val form = LoginForm.loginForm
 
     "bind with no errors when supplied with a valid email address and password" in {
-      form.bind(Map("email" -> "example@example.com", "password" -> "p2ssword")).errors.size shouldEqual 0
+      form.bind(Map("email" -> "example@example.com", "password" -> "p2ssword")).errors.size mustBe 0
     }
 
     "bind with no errors when supplied with a valid Crendentials" in {
-      form.fill(LoginDetailsModel("example@example.com", "p2ssword")).errors.size shouldEqual 0
+      form.fill(LoginDetailsModel("example@example.com", "p2ssword")).errors.size mustBe 0
     }
 
     "bind with an error" when {
-
       "not supplied an email address" should {
         val boundForm = form.bind(Map("email" -> "", "password" -> "p2ssword"))
 
         "have 1 error" in {
-          boundForm.errors.size shouldEqual 2
+          boundForm.errors.size mustBe 2
         }
 
         "have the error message key 'email.required.error'" in {
@@ -36,7 +35,7 @@ class LoginFormSpec extends WordSpec with Matchers{
         val boundForm = form.bind(Map("email" -> "anEmailAddress", "password" -> "p2ssword"))
 
         "have 1 error" in {
-          boundForm.errors.size shouldEqual 1
+          boundForm.errors.size mustBe 1
         }
 
         "have the error message key 'email.format.error'" in {
@@ -48,7 +47,7 @@ class LoginFormSpec extends WordSpec with Matchers{
         val boundForm = form.bind(Map("email" -> "example@exaple.com", "password" -> ""))
 
         "have 1 error" in {
-          boundForm.errors.size shouldEqual 2
+          boundForm.errors.size mustBe 2
         }
 
         "have the error message key 'password.required.error'" in {
@@ -60,7 +59,7 @@ class LoginFormSpec extends WordSpec with Matchers{
         val boundForm = form.bind(Map("email" -> "example@exaple.com", "password" -> "pword"))
 
         "have 1 error" in {
-          boundForm.errors.size shouldEqual 1
+          boundForm.errors.size mustBe 1
         }
 
         "have the error message key 'password.length.error'" in {
@@ -72,7 +71,7 @@ class LoginFormSpec extends WordSpec with Matchers{
         val boundForm = form.bind(Map("email" -> "example@exaple.com", "password" -> "thisPasswordIsTooLong"))
 
         "have 1 error" in {
-          boundForm.errors.size shouldEqual 1
+          boundForm.errors.size mustBe 1
         }
 
         "have the error message key 'password.required.error'" in {
